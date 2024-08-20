@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();  
 const {DBConnection} = require('./database/db.js');
 const User = require('./models/Users.js');
@@ -8,6 +9,12 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 DBConnection();
+
+//cors
+app.use(cors({
+    origin: 'http://localhost:5173', // Replace with your frontend URL
+    credentials: true // To allow cookies to be sent and received
+  }));
 
 //middelewares
 app.use(express.json());
@@ -21,7 +28,7 @@ app.post("/register",async (req,res)=>{
     console.log(req);
     try {
         //get all data from req body
-        const {firstname, lastname, email, password,date_of_birth,registration_date}=req.body;
+        const {firstname, lastname, email, password,date_of_birth}=req.body;
         
         //check all data should exists
         if(!(firstname && lastname && email && password)){
@@ -96,6 +103,11 @@ app.post("/login",async (req,res)=>{
         );
 
         //store cookies
+        res.cookie('token', token, {
+            httpOnly: true, // Cookie is only accessible by the web server
+            secure: process.env.NODE_ENV === 'production', // Send cookie over HTTPS only in production
+            maxAge: 3600000 // Cookie expiry: 1 hour
+        });
 
         //send the token
         user.token = token;
