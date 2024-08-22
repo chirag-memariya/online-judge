@@ -1,10 +1,12 @@
 const express = require('express');
+const cors = require('cors');
 const { generateFile } = require('./generateFile.js');
 const { executeCpp } = require('./execureCpp.js');
 
 const app = express();
  
 //middleware
+app.use(cors());
 app.use(express.json())
 app.use(express.urlencoded({extended: true}));
 
@@ -26,8 +28,6 @@ app.post("/run",async (req,res)=>{
     } catch (error) {
         return res.status(500).json({ error: error.message});
     }
-
-    res.json( {language,code} );
 });
 
 app.listen(8080,()=>{
