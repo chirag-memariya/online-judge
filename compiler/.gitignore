@@ -130,5 +130,7 @@ dist
 .pnp.*
 
 #outputs and code
-/codes
-/outputs
+outputs/
+codes/
+inputs/
+

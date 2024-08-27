@@ -3,7 +3,9 @@ import CodeEditor from '../components/problem/CodeEditor'
 
 const Problem = () => {
   return (
+    <>
     <CodeEditor/>
+    </>
   )
 }
 

@@ -131,10 +131,3 @@ dist
 
 #doc file
 .git-commit-message
-
-#extra readme file
-result.txt
-test.txt
-test.py
-Untitled-1.md
-Untitled-2.txt
