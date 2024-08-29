@@ -14,7 +14,7 @@ const Home = () => {
             <h1 className="text-3xl text-slate-600 font-bold">
                 Hello {name}
             </h1>
-            <Table items={items} heading="Dynamic List" />
+            <Table heading="Dynamic List" />
             <Footer />
         </>
 

@@ -51,6 +51,8 @@ const CodeEditor = () => {
     };
     return (
         <>
+        <div className="flex-1 p-4 bg-white shadow rounded">
+
             <div className="flex flex-col justify-center items-center">
 
                 <h1>CodeEditor</h1>
@@ -76,6 +78,7 @@ const CodeEditor = () => {
                     placeholder="Write code here...">
                 </textarea>
 
+                
                 <label htmlFor="input" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                     Input
                 </label>
@@ -113,6 +116,8 @@ const CodeEditor = () => {
                     </span>
                 </button>
             </div>
+        </div>
+
         </>
     )
 }

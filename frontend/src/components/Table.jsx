@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Table = ({heading}) => {
+    const navigate = useNavigate();
+
+    const handleNavigation = (item)=>{
+        console.log('Navigating with item:', item); // Debugging log
+        navigate('/problem',{state: {item}});
+    }
     const [selectedIndex, setSelectedIndex] = useState([]);
     const [items, setItems] = useState([]);
 
@@ -12,7 +19,7 @@ const Table = ({heading}) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const responce = await axios.get("https://jsonplaceholder.typicode.com/posts");
+                const responce = await axios.get("http://localhost:8000/problems");
                 setItems(responce.data);
 
             } catch (error) {
@@ -38,11 +45,16 @@ const Table = ({heading}) => {
                 <tbody>
                     {
                         items.map((item,index) =>
-                            <tr key={item.id} className={`
+                            <tr key={item.id||index} className={`
                                     ${index === selectedIndex ? "bg-gray-500" : "bg-white border-b dark:bg-gray-800 dark:border-gray-700"}
                                 `}>
                                 {
-                                    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white" onMouseEnter={() => handleClick(index)}>
+                                    <th 
+                                    scope="row" 
+                                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white" 
+                                    onClick={() => handleNavigation(item)}
+                                    onMouseEnter={() => handleClick(index)}
+                                    >
                                         {item.title}
                                     </th>
                                 }
