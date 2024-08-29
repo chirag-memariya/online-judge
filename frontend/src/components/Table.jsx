@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const Table = ({heading}) => {
+const Table = () => {
     const navigate = useNavigate();
 
     const handleNavigation = (item)=>{
@@ -34,7 +34,6 @@ const Table = ({heading}) => {
         <div className="relative overflow-x-auto">
             <br />
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <caption className="font-bold text-slate-600" >{heading}</caption>
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" className="px-6 py-3">
