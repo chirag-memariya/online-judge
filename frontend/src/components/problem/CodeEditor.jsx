@@ -1,13 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 
 const CodeEditor = () => {
     const [language, setLanguage] = useState('cpp');
-    const [code, setCode] = useState(`
+    const [input, setInput] = useState('');
+    const [output, setOutput] = useState('');
+    const [code, setCode] = useState(``);
 
+    const codeTemplates = {
+        cpp: `
         #include <iostream>
         using namespace std;
-   
+
         int main(){
             int n1,n2,sum;
             cin >> n1 >> n2;
@@ -15,10 +19,68 @@ const CodeEditor = () => {
             std::cout <<"The sum of the two number is: "<< sum;
             return 0;
         }
+        `,
+        java: `
+        import java.util.Scanner;
+
+        public class Main {
+            public static void main(String[] args) {
+                Scanner sc = new Scanner(System.in);
+                int n1 = sc.nextInt();
+                int n2 = sc.nextInt();
+                int sum = n1 + n2;
+                System.out.println("The sum of the two numbers is: " + sum);
+            }
+        }
+        `,
+        py: `
+        n1 = int(input())
+        n2 = int(input())
+        print("The sum of the two numbers is:", n1 + n2)
+        `,
+        go: `
+        package main
+        import "fmt"
+
+        func main() {
+            var n1, n2 int
+            fmt.Scanf("%d %d", &n1, &n2)
+            fmt.Printf("The sum of the two numbers is: %d\\n", n1+n2)
+        }
+        `,
+        js: `
+        const readline = require('readline');
+        const rl = readline.createInterface({
+            input: process.stdin,
+            output: process.stdout
+        });
+
+        rl.question('Enter two numbers: ', (answer) => {
+            const [n1, n2] = answer.split(' ').map(Number);
+            console.log('The sum of the two numbers is:', n1 + n2);
+            rl.close();
+        });
+        `
+    };
+
+    //Update the code whenever the language changes
+    useEffect(()=>{
+        setCode(codeTemplates[language]);
+    },[language]);
+
+        // #include <iostream>
+        // using namespace std;
+   
+        // int main(){
+        //     int n1,n2,sum;
+        //     cin >> n1 >> n2;
+        //     sum = n1 + n2;
+        //     std::cout <<"The sum of the two number is: "<< sum;
+        //     return 0;
+        // }
         
-        `);
-    const [input, setInput] = useState('');
-    const [output, setOutput] = useState('');
+        // `);
+
 
     const handleSubmit = async () => {
         const payload = {

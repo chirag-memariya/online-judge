@@ -131,6 +131,7 @@ dist
 
 #doc file
 .git-commit-message
+.git-example.md
 
 #extra readme file
 result.txt
