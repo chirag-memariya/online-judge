@@ -395,19 +395,26 @@ app.delete('/submissions/:id', async (req, res) => {
 
 app.post('/testcases', async (req, res) => {
     try {
-        const { input, output, problem } = req.body;
+        const { cases, problem } = req.body;
 
-        if (!(input && output && problem)) {
-            return res.status(400).send("All fields (input, output, problem) are required.");
+        // Check if both cases and problem are provided
+        if (!cases || !problem) {
+            return res.status(400).send("Fields 'cases' and 'problem' are required.");
         }
 
+        // Validate that 'cases' is an array with at least one element
+        if (!Array.isArray(cases) || cases.length === 0) {
+            return res.status(400).send("'cases' must be a non-empty array of input-output objects.");
+        }
+
+        // Validate the 'problem' ID
         if (!mongoose.Types.ObjectId.isValid(problem)) {
             return res.status(400).send("Invalid problem ID.");
         }
 
+        // Create the new test case
         const testCase = await TestCase.create({
-            input,
-            output,
+            cases,
             problem,
         });
 
@@ -420,6 +427,7 @@ app.post('/testcases', async (req, res) => {
         res.status(500).send("Test case creation failed. Please try again. Error: " + error.message);
     }
 });
+
 
 app.get('/testcases', async (req, res) => {
     try {
@@ -449,9 +457,10 @@ app.get('/testcases/:id', async (req, res) => {
     }
 });
 
+// Update a specific test case by ID
 app.put('/testcases/:id', async (req, res) => {
     try {
-        const { input, output, problem } = req.body;
+        const { cases, problem } = req.body;
 
         // Ensure the problem is a valid ObjectId reference if provided
         if (problem && !mongoose.Types.ObjectId.isValid(problem)) {
@@ -461,7 +470,7 @@ app.put('/testcases/:id', async (req, res) => {
         // Find test case by ID and update fields
         const updatedTestCase = await TestCase.findByIdAndUpdate(
             req.params.id,
-            { input, output, problem },
+            { cases, problem },
             { new: true, runValidators: true }
         );
 
@@ -479,6 +488,7 @@ app.put('/testcases/:id', async (req, res) => {
     }
 });
 
+// Delete a specific test case by ID
 app.delete('/testcases/:id', async (req, res) => {
     try {
         const testCase = await TestCase.findByIdAndDelete(req.params.id);
@@ -497,6 +507,19 @@ app.delete('/testcases/:id', async (req, res) => {
     }
 });
 
+// Get test cases for a specific problem ID
+app.get('/testcases/problem/:problemId', async (req, res) => {
+    try {
+        const testCases = await TestCase.find({ problem: req.params.problemId });
+        if (!testCases.length) {
+            return res.status(404).send("No test cases found for this problem.");
+        }
+        res.status(200).json(testCases);
+    } catch (error) {
+        console.error("Error: fetching test cases for problem failed! " + error.message);
+        res.status(500).send("Fetching test cases failed. Please try again.");
+    }
+});
 
 
 app.listen(8000,()=>{
