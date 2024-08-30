@@ -7,13 +7,14 @@ const CodeEditor = ({ problemId }) => {
     const [output, setOutput] = useState('');
     const [code, setCode] = useState(``);
     const [testCases, setTestCases] = useState(``);
+    const [userId, setUserId] = useState('66bf36a133c87b33b6402464'); // Hard-coded user ID for now
 
     // Console log to verify problemId is received
     // console.log("ProblemId received in CodeEditor:", problemId);
 
 
     const codeTemplates = {
-            cpp: `
+        cpp: `
     #include <iostream>
     using namespace std;
 
@@ -25,7 +26,7 @@ const CodeEditor = ({ problemId }) => {
         return 0;
     }
         `,
-            java: `
+        java: `
     import java.util.Scanner;
 
     public class Main {
@@ -38,12 +39,12 @@ const CodeEditor = ({ problemId }) => {
         }
     }
         `,
-            py: `
+        py: `
     n1 = int(input())
     n2 = int(input())
     print(n1 + n2)
         `,
-            go: `
+        go: `
     package main
     import "fmt"
 
@@ -53,7 +54,7 @@ const CodeEditor = ({ problemId }) => {
         fmt.Printf("%d", n1+n2)
     }
         `,
-            js: `
+        js: `
     const readline = require('readline');
     const rl = readline.createInterface({
         input: process.stdin,
@@ -187,23 +188,25 @@ const CodeEditor = ({ problemId }) => {
         // Here you can add code to update the UI with the results if needed
 
         // Store submission
-        // const submissionPayload = {
-        //     problem: problemId,
-        //     user: 'USER_ID',  // Replace with actual user ID
-        //     verdict,
-        //     solution: code,
-        // };
+        const submissionPayload = {
+            problem: problemId,
+            user: userId,  // Replace with actual user ID from context or props
+            verdict,
+            solution: code,
+            execution_time: 0 // You can calculate and include actual execution time if needed
+        };
 
-        // try {
-        //     await axios.post('/submissions', submissionPayload, {
-        //         headers: {
-        //             'Content-Type': 'application/json'
-        //         }
-        //     });
-        //     alert(`Submission Result: ${verdict}`);
-        // } catch (error) {
-        //     console.error('Failed to store submission:', error);
-        // }
+        try {
+            const response = await axios.post('http://localhost:8000/submissions', submissionPayload, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            alert(`Submission Result: ${verdict}`);
+            console.log("Submission Response:", response.data);
+        } catch (error) {
+            console.error('Failed to store submission:', error);
+        }
     };
 
     if (!problemId) {
