@@ -7,7 +7,7 @@ const CodeEditor = ({ problemId }) => {
     const [output, setOutput] = useState('');
     const [code, setCode] = useState(``);
     const [testCases, setTestCases] = useState(``);
-    const [userId, setUserId] = useState('66bf36a133c87b33b6402464'); // Hard-coded user ID for now
+    const [userId, setUserId] = useState('66c4d7e3aeaf2a19328a6a7d'); // Hard-coded user ID for now
 
     // Console log to verify problemId is received
     // console.log("ProblemId received in CodeEditor:", problemId);
@@ -40,9 +40,15 @@ const CodeEditor = ({ problemId }) => {
     }
         `,
         py: `
-    n1 = int(input())
-    n2 = int(input())
-    print(n1 + n2)
+# Read the input line and split it into two parts
+n1, n2 = map(int, input().split())
+
+# Calculate the sum
+sum = n1 + n2
+
+# Print the sum
+print(sum)
+
         `,
         go: `
     package main
@@ -195,6 +201,9 @@ const CodeEditor = ({ problemId }) => {
             solution: code,
             execution_time: 0 // You can calculate and include actual execution time if needed
         };
+
+        console.log("Submission Payload:", submissionPayload); // Add this line to check payload in frontend
+
 
         try {
             const response = await axios.post('http://localhost:8000/submissions', submissionPayload, {

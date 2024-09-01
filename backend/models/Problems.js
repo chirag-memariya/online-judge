@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const ProblemSchema = new mongoose.Schema({
     title: {
         type: String,
@@ -13,7 +12,7 @@ const ProblemSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    difficult: {
+    difficulty: {
         type: String,
         enum: ['easy','medium','hard'],
         default: 'medium',

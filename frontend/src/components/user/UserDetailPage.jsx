@@ -37,6 +37,7 @@ const UserDetailPage = () => {
           <p><strong>Email:</strong> {user.email}</p>
           <p><strong>Date of Birth:</strong> {user.date_of_birth ? new Date(user.date_of_birth).toLocaleDateString() : 'N/A'}</p>
           <p><strong>Registration Date:</strong> {new Date(user.registration_date).toLocaleDateString()}</p>
+          <p><strong>Score:</strong> {user.score ?? 'N/A'}</p> {/* Added the Score Field */}
         </div>
       ) : (
         <p>User not found</p>

@@ -2,6 +2,7 @@ const { exec } = require('child_process');
 
 const executeJs = async (filePath, inputFilePath) => {
     return new Promise((resolve, reject) => {
+        console.log(`Executing: node ${filePath} < ${inputFilePath}`);
         exec(
             `node ${filePath} < ${inputFilePath}`,
             (error, stdout, stderr) => {
@@ -13,6 +14,7 @@ const executeJs = async (filePath, inputFilePath) => {
                     console.error(`Node.js Runtime Stderr: ${stderr}`);
                     reject(stderr);
                 }
+                console.log(`Node.js Output: ${stdout}`); // Output log
                 resolve(stdout);
             }
         );

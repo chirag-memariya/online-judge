@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const SubmissionSchema = new mongoose.Schema({
     problem: {
         type: mongoose.Schema.Types.ObjectId,

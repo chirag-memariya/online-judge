@@ -13,7 +13,8 @@ const generateInputFile = (input)=>{
     const jobId = uuid();
     const input_filename = `${jobId}.txt`;
     const input_filePath = path.join(dirInputs,input_filename);
-    fs.writeFileSync(input_filePath,input);   
+    // Add a newline character to the end of the input
+    fs.writeFileSync(input_filePath, input + '\n', { encoding: 'utf8' });
     return input_filePath;
 };
 

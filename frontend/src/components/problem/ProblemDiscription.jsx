@@ -23,7 +23,7 @@ const ProblemDiscription = ({item}) => {
           </p>
           <h4 className="mt-6 text-2xl font-bold">Difficulty</h4>
           <p className="mt-2 leading-7 text-gray-200">
-            {item.difficult}
+            {item.difficulty}
           </p>
         </div>
       </div>
