@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+
 
 const RegisterForm = () => {
 
@@ -11,6 +13,7 @@ const RegisterForm = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const {register} = useAuth();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -20,20 +23,8 @@ const RegisterForm = () => {
             return;
         }
         try {
-            const responce = await fetch('http://localhost:8000/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ firstname, lastname, email, password, dob }),
-                credentials: 'include'
-            });
-            const data = await responce.json();
-            if (!responce.ok) {
-                throw new Error(data.message || "Something went wrong while handling submit!")
-            }
-            console.log('registration successful', data);
-            //redirect to login form
+            await register(firstname,lastname,email,password,dob);
+            console.log('Registration successful');
             navigate('/login');
         } catch (error) {
             setError("registration failed: " + error.message);

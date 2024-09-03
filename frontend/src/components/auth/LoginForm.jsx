@@ -1,35 +1,27 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 const LoginForm = () => {
   const [email,setEmail] = useState('');
   const [password,setPassword] = useState('');
   const [error,setError] = useState('');
   const navigate = useNavigate();
+  const {login} = useAuth();
+  const location = useLocation();
+
+  // Get the route the user was attempting to visit before being redirected to login
+  const from = location.state?.from || '/';
+  console.log("location state : "+from);
 
   const handleSubmit =async (e)=>{
     e.preventDefault();
     try {
-      const responce = await fetch('http://localhost:8000/login',{
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({email,password}),
-        credentials: 'include' // This line allows cookies to be sent with the request
-    });
-    const data = await responce.json();  
-    if(!responce.ok){
-      throw new Error(data.message || 'Something went wrong');
-    }
-
-    console.log('login successful',data);
-    //redirect to dashboard
-    navigate('/');
-
+      await login(email,password);
+      console.log('Login successful');
+      navigate(from);
     } catch (error) {
-      setError("login failed: "+error.message)
+      setError("Login failed: "+error.message);
     }
   };
 

@@ -15,11 +15,13 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const authRoutes = require('./routes/authRoutes.js');
 const userRoutes = require('./routes/userRoutes');
 const problemRoutes = require('./routes/problemRoutes');
 const submissionRoutes = require('./routes/submissionRoutes');
 const testcaseRoutes = require('./routes/testcaseRoutes');
 
+app.use('/auth',authRoutes);
 app.use('/users', userRoutes);
 app.use('/problems', problemRoutes);
 app.use('/submissions', submissionRoutes);

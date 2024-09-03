@@ -91,7 +91,6 @@ print(sum)
                 const response = await axios.get(`http://localhost:8000/testcases/problem/${problemId}`);
                 const fetchedTestCases = response.data[0]?.cases || [];
                 setTestCases(fetchedTestCases);
-                console.log('Fetched test cases:', fetchedTestCases);
             } catch (error) {
                 console.error("Failed to fetch test cases: ", error);
             }

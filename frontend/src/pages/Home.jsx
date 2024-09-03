@@ -4,8 +4,6 @@ import Table from '../components/Table'
 import Footer from '../components/Footer'
 
 const Home = () => {
-    const items = ["A", "B", "C", "D", "E", "F"];
-    // console.log(items);
     const name = 'World!'
     return (
         <>

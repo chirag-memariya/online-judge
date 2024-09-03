@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/Users'); // Import your User model
+const User = require('../models/Users'); 
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -116,72 +116,6 @@ router.post('/logout',(req,res)=>{
     } catch (error) {
         console.error("Error during logout: "+error);
         res.status(500).send("Logout failed. please try again.");
-    }
-});
-
-router.get('/', async (req, res) => {
-    try {
-        const users = await User.find().select('-password').sort({ score: -1 }); // Sort by score in descending order
-        res.status(200).json(users);
-    } catch (error) {
-        console.error("Error: fetching users failed! " + error);
-        res.status(500).send("Fetching users failed. Please try again.");
-    }
-});
-
-router.get('/:id', async (req, res) => {
-    try {
-        const user = await User.findById(req.params.id).select('-password');
-        if (!user) {
-            return res.status(404).send("User not found.");
-        }
-        res.status(200).json(user);
-    } catch (error) {
-        console.error("Error: fetching user failed! " + error);
-        res.status(500).send("Fetching user failed. Please try again.");
-    }
-});
-
-router.put('/:id', async (req, res) => {
-    try {
-        const { firstname, lastname, email, date_of_birth } = req.body;
-
-        // Find user by ID and update fields
-        const updatedUser = await User.findByIdAndUpdate(
-            req.params.id,
-            { firstname, lastname, email, date_of_birth },
-            { new: true, runValidators: true, select: '-password' } // Exclude password from result
-        );
-
-        if (!updatedUser) {
-            return res.status(404).send("User not found.");
-        }
-
-        res.status(200).json({
-            message: "User updated successfully.",
-            user: updatedUser,
-        });
-    } catch (error) {
-        console.error("Error: updating user failed! " + error);
-        res.status(500).send("Updating user failed. Please try again.");
-    }
-});
-
-router.delete('/:id', async (req, res) => {
-    try {
-        const user = await User.findByIdAndDelete(req.params.id);
-
-        if (!user) {
-            return res.status(404).send("User not found.");
-        }
-
-        res.status(200).json({
-            message: "User deleted successfully.",
-            user,
-        });
-    } catch (error) {
-        console.error("Error: deleting user failed! " + error);
-        res.status(500).send("Deleting user failed. Please try again.");
     }
 });
 

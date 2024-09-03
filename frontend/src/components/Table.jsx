@@ -6,8 +6,7 @@ const Table = () => {
     const navigate = useNavigate();
 
     const handleNavigation = (item)=>{
-        console.log('Navigating with item:', item); // Debugging log
-        navigate('/problem',{state: {item}});
+        navigate(`/problem/`,{state: {item}});
     }
     const [selectedIndex, setSelectedIndex] = useState([]);
     const [items, setItems] = useState([]);
