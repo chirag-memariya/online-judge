@@ -1,26 +1,23 @@
 const express = require('express');
 const cors = require('cors');
-const { generateFile } = require('./generateFile.js');
-const { generateInputFile } = require('./generateInputFile.js');
-const { executeCpp } = require('./executeCpp.js');
-const { executeJava } = require('./executeJava.js');
-const { executeGo } = require('./executeGo.js');
-const { executePython } = require('./executePython.js');
-const { executeJs } = require('./executeJavaScript.js');
+const { generateFile } = require('./generateFile/generateFile.js');
+const { generateInputFile } = require('./generateFile/generateInputFile.js');
+const { executeCpp } = require('./execute/executeCpp.js');
+const { executeJava } = require('./execute/executeJava.js');
+const { executeGo } = require('./execute/executeGo.js');
+const { executePython } = require('./execute/executePython.js');
+const { executeJs } = require('./execute/executeJavaScript.js');
 
 const app = express();
  
-//middleware
 app.use(cors());
 app.use(express.json())
 app.use(express.urlencoded({extended: true}));
 
 app.get("/",(req,res)=>{
-    res.send("Home");
+    res.send("Online Compiler");
 });
 
-
-//mapping of language to their respective execute functions 
 const executeFunctions = {
     'cpp': executeCpp,
     'java': executeJava,
