@@ -5,10 +5,10 @@ import { useAuth } from '../context/AuthContext';
 
 const Table = () => {
     const navigate = useNavigate();
-    const {user} = useAuth();
+    const {isAuthenticated} = useAuth();
 
     const handleNavigation = (item)=>{
-        if(!user){
+        if(!isAuthenticated){
             navigate('/login', { state: { from: '/problem', item } });
         }else {
             navigate(`/problem`, { state: { item } });

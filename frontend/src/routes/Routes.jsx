@@ -6,6 +6,7 @@ import Register from '../pages/Register';
 import Problem from '../pages/Problem';
 import Leaderboard from '../pages/Leaderboard';
 import UserDetailPage from '../components/user/UserDetailPage';
+import NotFound from '../pages/NotFound';
 import { useAuth } from '../context/AuthContext'; // Import useAuth hook
 
 const AppRoutes = () => {
@@ -66,13 +67,5 @@ const AppRoutes = () => {
     </Router>
   );
 };
-
-// Optional: NotFound Component for 404 Errors
-const NotFound = () => (
-  <div>
-    <h1>404 - Page Not Found</h1>
-    <p>The page you are looking for does not exist.</p>
-  </div>
-);
 
 export default AppRoutes;
