@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Home from '../pages/Home';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
@@ -9,7 +9,7 @@ import UserDetailPage from '../components/user/UserDetailPage';
 import { useAuth } from '../context/AuthContext'; // Import useAuth hook
 
 const AppRoutes = () => {
-  const { isAuthenticated } = useAuth(); 
+  const { isAuthenticated } = useAuth();
   return (
     <Router>
       <Routes>
@@ -25,7 +25,7 @@ const AppRoutes = () => {
             isAuthenticated ? (
               <Problem />
             ) : (
-              <Navigate to="/login" state={{ from: '/problem' }} />
+              <Navigate to="/login" state={{ from: '/problem',item: null}} />
             )
           }
         />

@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Table = () => {
     const navigate = useNavigate();
+    const {user} = useAuth();
 
     const handleNavigation = (item)=>{
-        navigate(`/problem/`,{state: {item}});
+        if(!user){
+            navigate('/login', { state: { from: '/problem', item } });
+        }else {
+            navigate(`/problem`, { state: { item } });
+          }
     }
     const [selectedIndex, setSelectedIndex] = useState([]);
     const [items, setItems] = useState([]);

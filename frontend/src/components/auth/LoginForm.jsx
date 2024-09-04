@@ -12,14 +12,15 @@ const LoginForm = () => {
 
   // Get the route the user was attempting to visit before being redirected to login
   const from = location.state?.from || '/';
-  console.log("location state : "+from);
+  const item = location.state?.item||null;
+  console.log("location state : "+from+"item: "+item);
 
   const handleSubmit =async (e)=>{
     e.preventDefault();
     try {
       await login(email,password);
       console.log('Login successful');
-      navigate(from);
+      navigate(from,{state: {item}});
     } catch (error) {
       setError("Login failed: "+error.message);
     }
