@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
+import { useAuth } from '../../context/AuthContext';
 
 const CodeEditor = ({ problemId }) => {
     const [language, setLanguage] = useState('cpp');
@@ -7,8 +8,7 @@ const CodeEditor = ({ problemId }) => {
     const [output, setOutput] = useState('');
     const [code, setCode] = useState(``);
     const [testCases, setTestCases] = useState(``);
-    const [userId, setUserId] = useState('66c4d7e3aeaf2a19328a6a7d'); // Hard-coded user ID for now
-
+    const { userId } = useAuth();
     // Console log to verify problemId is received
     // console.log("ProblemId received in CodeEditor:", problemId);
 
@@ -205,7 +205,7 @@ print(sum)
 
 
         try {
-            const response = await axios.post('http://localhost:8000/submissions', submissionPayload, {
+            const response = await axios.post('http://localhost:8000/submissions/create', submissionPayload, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
