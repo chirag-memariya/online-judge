@@ -4,121 +4,6 @@ const User = require('../models/Users'); // Import your User model
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-router.post("/register", async (req, res) => {
-    console.log(req);
-    try {
-        //get all data from req body
-        const { firstname, lastname, email, password, date_of_birth } = req.body;
-
-        //check all data should exists
-        if (!(firstname && lastname && email && password)) {
-            return res.status(400).send("All fields are required.");
-        }
-        //check if user already exists
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
-            return res.status(400).send("Email already exists! Try with a different email.");
-        }
-
-        //encrypt password
-        const hashPassword = bcrypt.hashSync(password, 8);
-        console.log("hashPassword: " + hashPassword);
-
-        //save to the database
-        const user = await User.create({
-            firstname,
-            lastname,
-            email,
-            password: hashPassword,
-            date_of_birth,
-            registration_date: new Date()
-        });
-
-        //generate token for the user and send it
-        const token = jwt.sign(
-            { id: user._id, email },
-            process.env.SECRET_KEY,
-            { expiresIn: "10h" }
-        );
-        user.token = token;
-        user.password = undefined;
-        res.status(201).json({
-            message: "You have successfully register!",
-            user,
-            token
-        });
-    } catch (error) {
-        console.error("Error: registration failed! Please try again." + error);
-        res.status(500).send("Registration failed. Please try again.");
-    }
-});
-
-router.post("/login", async (req, res) => {
-    try {
-        //get the use details from req body
-        const { email, password } = req.body;
-
-        //check all data should exist
-        if (!(email && password)) {
-            return res.status(400).send("All fields are required.");
-        }
-
-        //find user in database
-        const user = await User.findOne({ email });
-        if (!user) {
-            return res.status(401).send("User does not exist with this email!");
-        }
-
-        //match password
-        const isMatch = bcrypt.compareSync(password, user.password);
-        if (!isMatch) {
-            return res.status(401).send("Invalid password!");
-        }
-
-        //create token
-        const token = jwt.sign(
-            { id: user._id, email },
-            process.env.SECRET_KEY,
-            { expiresIn: "1h" }
-        );
-
-        //store cookies
-        res.cookie('token', token, {
-            httpOnly: true, // Cookie is only accessible by the web server
-            secure: process.env.NODE_ENV === 'production', // Send cookie over HTTPS only in production
-            maxAge: 3600000 // Cookie expiry: 1 hour
-        });
-
-        //send the token
-        user.token = token;
-        user.password = undefined;
-        res.status(201).json({
-            message: "You have successfully logged in!",
-            user,
-            token
-        });
-    } catch (error) {
-        console.error("Error during login: " + error);
-        res.status(500).send("Login failed. Please try again.");
-    }
-});
-
-router.post('/logout',(req,res)=>{
-    try {
-        res.clearCookie('token',{
-            httpOnly: true,
-            secure: process.env.NODE_ENV == 'production',
-        })
-
-        res.status(200).json({
-            message: "You have successfully logged out!",
-        });
-    } catch (error) {
-        console.error("Error during logout: "+error);
-        res.status(500).send("Logout failed. please try again.");
-    }
-});
-
 router.get('/', async (req, res) => {
     try {
         const users = await User.find().select('-password').sort({ score: -1 }); // Sort by score in descending order
@@ -142,14 +27,22 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/edit/:id', async (req, res) => {
     try {
-        const { firstname, lastname, email, date_of_birth } = req.body;
+        const { firstname, lastname, email, password, date_of_birth } = req.body;
+
+        let formattedDob = date_of_birth;
+        if (date_of_birth) {
+            formattedDob = new Date(date_of_birth);
+            if (isNaN(formattedDob)) {
+                return res.status(400).send("Invalid date of birth format.");
+            }
+        }
 
         // Find user by ID and update fields
         const updatedUser = await User.findByIdAndUpdate(
             req.params.id,
-            { firstname, lastname, email, date_of_birth },
+            { firstname, lastname, email, password, date_of_birth: formattedDob },
             { new: true, runValidators: true, select: '-password' } // Exclude password from result
         );
 
@@ -167,7 +60,7 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/delete/:id', async (req, res) => {
     try {
         const user = await User.findByIdAndDelete(req.params.id);
 
@@ -184,5 +77,24 @@ router.delete('/:id', async (req, res) => {
         res.status(500).send("Deleting user failed. Please try again.");
     }
 });
+
+router.delete('/delete/all-non-admin-users', async (req, res) => {
+    try {
+      const result = await User.deleteMany({ role: { $ne: 'admin' } }); // Delete all users except those with role 'admin'
+  
+      if (result.deletedCount === 0) {
+        return res.status(404).send("No users found to delete.");
+      }
+  
+      res.status(200).json({
+        message: "All non-admin users deleted successfully.",
+        deletedCount: result.deletedCount,
+      });
+    } catch (error) {
+      console.error("Error: deleting non-admin users failed! " + error);
+      res.status(500).send("Deleting non-admin users failed. Please try again.");
+    }
+  });
+  
 
 module.exports = router;

@@ -3,7 +3,7 @@ const router = express();
 const TestCase = require('../models/Test_Cases.js');
 const mongoose = require('mongoose'); 
 
-router.post('/', async (req, res) => {
+router.post('/create', async (req, res) => {
     try {
         const { cases, problem } = req.body;
 
@@ -68,7 +68,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // Update a specific test case by ID
-router.put('/:id', async (req, res) => {
+router.put('/edit/:id', async (req, res) => {
     try {
         const { cases, problem } = req.body;
 
@@ -99,7 +99,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // Delete a specific test case by ID
-router.delete('/:id', async (req, res) => {
+router.delete('/delete/:id', async (req, res) => {
     try {
         const testCase = await TestCase.findByIdAndDelete(req.params.id);
 

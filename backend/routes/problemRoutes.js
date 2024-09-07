@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Problem = require('../models/Problems'); // Import your Problem model
 
-router.post('/', async (req, res) => {
+router.post('/create', async (req, res) => {
     try {
         const { title, statement, input_output_sample, difficulty } = req.body;
 
@@ -54,7 +54,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/edit/:id', async (req, res) => {
     try {
         const { title, statement, input_output_sample, difficulty } = req.body;
 
@@ -79,7 +79,7 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/delete/:id', async (req, res) => {
     try {
         const problem = await Problem.findByIdAndDelete(req.params.id);
 

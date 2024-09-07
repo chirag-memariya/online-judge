@@ -5,7 +5,7 @@ const Problem = require('../models/Problems.js');
 const Submission = require('../models/Submissions.js');
 const mongoose = require('mongoose');
 
-router.post('/', async (req, res) => {
+router.post('/create', async (req, res) => {
     let session;
     try {
         const { problem, user, verdict, solution, execution_time } = req.body;
@@ -180,7 +180,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/edit/:id', async (req, res) => {
     try {
         const { verdict, solution, execution_time } = req.body;
 
@@ -205,7 +205,7 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/delete/:id', async (req, res) => {
     try {
         const submission = await Submission.findByIdAndDelete(req.params.id);
 
