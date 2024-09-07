@@ -1,5 +1,5 @@
 import React from 'react'
-import UserList from '../components/user/UserList'
+import UserList from '../components/userlist/UserList'
 
 const Leaderboard = () => {
   return (

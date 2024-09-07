@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 
 const Table = () => {
     const navigate = useNavigate();
@@ -36,40 +36,39 @@ const Table = () => {
     return (
 
 
-        <div className="relative overflow-x-auto">
+<div className="relative overflow-x-auto shadow-md sm:rounded-lg bg-white dark:bg-gray-800 p-4">
             <br />
-            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                        <th scope="col" className="px-6 py-3">
+                        <th scope="col" className="px-6 py-3 text-lg font-semibold text-gray-900 dark:text-white text-left">
                             Problem Lists
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    {
-                        items.map((item,index) =>
-                            <tr key={item.id||index} className={`
-                                    ${index === selectedIndex ? "bg-gray-500" : "bg-white border-b dark:bg-gray-800 dark:border-gray-700"}
-                                `}>
-                                {
-                                    <th 
-                                    scope="row" 
-                                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white" 
-                                    onClick={() => handleNavigation(item)}
-                                    onMouseEnter={() => handleClick(index)}
-                                    >
-                                        {item.title}
-                                    </th>
-                                }
-                            </tr>
-                        )
-
-                    }
+                    {items.map((item, index) => (
+                        <tr
+                            key={item.id || index}
+                            className={`cursor-pointer transition duration-200 ease-in-out transform hover:translate-x-4 ${
+                                index === selectedIndex ? "bg-indigo-100 dark:bg-indigo-900" : "bg-white dark:bg-gray-800"
+                            } border-b dark:border-gray-700`}
+                            onMouseEnter={() => handleClick(index)}
+                            onMouseLeave={() => setSelectedIndex(null)}
+                        >
+                            <td
+                                className="px-6 py-4 font-medium dark:text-white whitespace-nowrap "
+                                onClick={() => handleNavigation(item)}
+                            >
+                                {item.title}
+                            </td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
             <br />
         </div>
+
 
     )
 }
