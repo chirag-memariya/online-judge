@@ -3,17 +3,9 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
-const Table = () => {
+const AdminProblemList = () => {
     const navigate = useNavigate();
     const { isAuthenticated } = useAuth();
-
-    const handleNavigation = (item) => {
-        if (!isAuthenticated) {
-            navigate('/login', { state: { from: '/problem', item } });
-        } else {
-            navigate(`/problem`, { state: { item } });
-        }
-    };
 
     const [selectedIndex, setSelectedIndex] = useState([]);
     const [items, setItems] = useState([]);
@@ -22,39 +14,49 @@ const Table = () => {
         setSelectedIndex(index);
     };
 
-        // Utility function to determine button color based on difficulty
-        const getDifficultyButtonClasses = (difficulty) => {
-            switch (difficulty) {
-                case 'easy':
-                    return 'bg-green-500 hover:bg-green-600';
-                case 'medium':
-                    return 'bg-yellow-500 hover:bg-yellow-600';
-                case 'hard':
-                    return 'bg-red-500 hover:bg-red-600';
-                default:
-                    return 'bg-gray-500 hover:bg-gray-600';
-            }
-        };
+    const fetchProblems = async () => {
+        try {
+            const response = await axios.get('http://localhost:8000/problems');
+            setItems(response.data);
+        } catch (error) {
+            console.log('Error while fetching data.', error);
+        }
+    };
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get("http://localhost:8000/problems");
-                setItems(response.data);
-            } catch (error) {
-                console.log("Error while fetching data.", error);
-            }
-        };
-        fetchData();
+        fetchProblems();
     }, []);
+
+    const handleEdit = (id) => {
+        navigate(`/admin/problems/edit/${id}`);
+    };
+
+    const handleProblemNavigation = (item) => {
+        navigate(`/problem`, { state: { item } });
+    };
+
+    const handleDelete = async (id) => {
+        try {
+            await axios.delete(`http://localhost:8000/problems/delete/${id}`);
+            console.log("Problem deleted successfully");
+            fetchProblems();
+        } catch (error) {
+            console.error("Error deleting problem:", error);
+        }
+    };
+
+    const handleCreateNew = () => {
+        navigate('/admin/problems/create');
+    };
 
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg bg-white dark:bg-gray-800 p-4">
-            <div className="mb-4">
+            <div className="flex justify-between mb-4">
                 <button
-                    className="px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md"
+                    onClick={handleCreateNew}
+                    className="text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
-                    Refresh
+                    Create New Problem
                 </button>
             </div>
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -64,7 +66,7 @@ const Table = () => {
                             Problem Lists
                         </th>
                         <th scope="col" className="px-6 py-3 text-lg font-semibold text-gray-900 dark:text-white text-left">
-                            Difficulty
+                            Actions
                         </th>
                     </tr>
                 </thead>
@@ -80,15 +82,22 @@ const Table = () => {
                         >
                             <td
                                 className="px-6 py-4 font-medium dark:text-white whitespace-nowrap"
-                                onClick={() => handleNavigation(item)}
+                                onClick={() => handleProblemNavigation(item)}
                             >
                                 {item.title}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
+                            <td className="px-6 py-4 space-x-2">
                                 <button
-                                    className={`px-4 py-2 text-white rounded-md ${getDifficultyButtonClasses(item.difficulty)} w-24 h-8`}
+                                    onClick={() => handleEdit(item._id)}
+                                    className="text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                                 >
-                                    {item.difficulty}
+                                    Edit
+                                </button>
+                                <button
+                                    onClick={() => handleDelete(item._id)}
+                                    className="text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                                >
+                                    Delete
                                 </button>
                             </td>
                         </tr>
@@ -97,6 +106,6 @@ const Table = () => {
             </table>
         </div>
     );
-}
+};
 
-export default Table;
+export default AdminProblemList;

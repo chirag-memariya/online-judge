@@ -136,3 +136,7 @@ dist
 output/*
 input/*
 code/*
+
+generateFile/codes/*
+generateFile/inputs/*
+generateFile/outputs/*

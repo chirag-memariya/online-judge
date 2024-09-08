@@ -13,6 +13,8 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [userId, setUserId] = useState(() => localStorage.getItem('userId')); // Initialize from localStorage
     const [loading, setLoading] = useState(false);
+
+
     useEffect(() => {
         // Load user data from localStorage when the component mounts
         const storedUserId = localStorage.getItem('userId');
@@ -20,22 +22,6 @@ export const AuthProvider = ({ children }) => {
             setUserId(storedUserId);
         }
     }, []);
-
-    // // Attach token to every request
-    // const fetchWithAuth = async (url, options = {}) => {
-    //     const token = authData?.token;
-    //     const headers = {
-    //         'Content-Type': 'application/json',
-    //         ...(options.headers || {}),
-    //         ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
-    //     };
-
-    //     return fetch(url, {
-    //         ...options,
-    //         headers,
-    //         credentials: 'include', // to include cookies for CSRF protection
-    //     });
-    // };
 
 
     // login function    
@@ -129,8 +115,6 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    //delete user
-    // Add deleteUser function
     const deleteUser = async (id) => {
         setLoading(true);
         try {

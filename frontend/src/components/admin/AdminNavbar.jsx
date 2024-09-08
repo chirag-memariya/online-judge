@@ -5,34 +5,31 @@ import { useAuth } from '../../context/AuthContext';
 import markLogo from '../../assets/home_icon.svg';
 import profileLogo from '../../assets/person-male--v2.png';
 import { useNavigate } from 'react-router-dom';
+
 // Utility function to handle class names
 const navLinkClasses = (current) => 
   `rounded-md px-3 py-2 text-sm font-medium ${current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}`;
 
 const navigation = [
-  { name: 'Dashboard', href: '/', current: true },
-  { name: 'Leaderboard', href: '/leaderboard', current: false },
-  { name: 'Projects', href: '#', current: false },
-  { name: 'Calendar', href: '#', current: false },
+  { name: 'Dashboard', href: '/admin-dashboard', current: true },
+  { name: 'Problem List', href: '/admin-dashboard/problem-list', current: false },
+  { name: 'User Management', href: '/admin-dashboard/user-management', current: false },
 ];
 
-export default function Navbar() {
-  const { isAuthenticated, logout } = useAuth();
-  
+export default function AdminNavbar() {
+  const { logout } = useAuth();
   const navigate = useNavigate();
-  const handleProfileNavigation = () => navigate(`/user/profile`);
-
-  const handleLoginNavigation = () => navigate(`/login`); // Navigate to login page
+  const handleProfileNavigation = () => navigate(`/admin/profile`);
 
   const handleLogout = async () => {
     try {
       await logout();
       console.log('Logout successful');
+      navigate('/');
     } catch (error) {
       console.error('Error logging out:', error);
     }
   };
-
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -66,56 +63,47 @@ export default function Navbar() {
             </div>
           </div>
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            {/* Show Profile Dropdown if authenticated, else show Login button */}
-            {isAuthenticated ? (
-              <Menu as="div" className="relative ml-3">
-                <div>
-                  <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                    <span className="sr-only">Open user menu</span>
-                    <img
-                      width="94"
-                      height="94"
-                      alt="Profile"
-                      src={profileLogo}
-                      className="h-8 w-8 rounded-full"
-                    />
-                  </MenuButton>
-                </div>
-                <MenuItems
-                  transition
-                  className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
-                >
-                  <MenuItem>
-                    <a
-                      onClick={handleProfileNavigation}
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      Your Profile
-                    </a>
-                  </MenuItem>
-                  <MenuItem>
-                    <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      Settings
-                    </a>
-                  </MenuItem>
-                  <MenuItem>
-                    <button
-                      onClick={handleLogout}
-                      className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      Logout
-                    </button>
-                  </MenuItem>
-                </MenuItems>
-              </Menu>
-            ) : (
-              <button
-                onClick={handleLoginNavigation}
-                className="text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 px-3 py-2 rounded-md"
+            {/* Profile dropdown */}
+            <Menu as="div" className="relative ml-3">
+              <div>
+                <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                  <span className="sr-only">Open user menu</span>
+                  <img
+                    width="94"
+                    height="94"
+                    alt="Profile"
+                    src={profileLogo}
+                    className="h-8 w-8 rounded-full"
+                  />
+                </MenuButton>
+              </div>
+              <MenuItems
+                transition
+                className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
               >
-                Login
-              </button>
-            )}
+                <MenuItem>
+                  <a
+                    onClick={handleProfileNavigation}
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    Your Profile
+                  </a>
+                </MenuItem>
+                <MenuItem>
+                  <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    Settings
+                  </a>
+                </MenuItem>
+                <MenuItem>
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    Logout
+                  </button>
+                </MenuItem>
+              </MenuItems>
+            </Menu>
           </div>
         </div>
       </div>

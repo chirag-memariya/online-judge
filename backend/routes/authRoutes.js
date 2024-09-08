@@ -172,4 +172,58 @@ router.post('/logout', (req, res) => {
     }
 });
 
+//add admin user
+router.post("/admin/add-admin", async (req, res) => {
+    console.log(req);
+    try {
+        // Get all data from req body
+        const { firstname, lastname, email, password, date_of_birth } = req.body;
+
+        // Check all data should exist
+        if (!(firstname && lastname && email && password)) {
+            return res.status(400).send("All fields are required.");
+        }
+
+        // Check if user already exists
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).send("Email already exists! Try with a different email.");
+        }
+
+        // Encrypt password
+        const hashPassword = bcrypt.hashSync(password, 8);
+        console.log("hashPassword: " + hashPassword);
+
+        // Save to the database
+        const user = await User.create({
+            firstname,
+            lastname,
+            email,
+            password: hashPassword,
+            date_of_birth,
+            registration_date: new Date(),
+            role: 'admin',
+        });
+
+        // Generate token for the user and send it
+        const token = jwt.sign(
+            { id: user._id, email },
+            process.env.SECRET_KEY,
+            { expiresIn: "10h" }
+        );
+        user.token = token;
+        user.password = undefined;
+        
+        // Send user details with id explicitly
+        res.status(201).json({
+            message: "Admin user successfully added!",
+            user: { ...user._doc, id: user._id }, // Ensure the id is included
+            token
+        });
+    } catch (error) {
+        console.error("Error: Admin registration failed! Please try again." + error);
+        res.status(500).send("Admin registration failed. Please try again.");
+    }
+});
+
 module.exports = router;

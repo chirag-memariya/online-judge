@@ -40,7 +40,7 @@ const UserProfile = () => {
   };
 
   const handleEditUser = () => {
-    navigate(`/user/profile/edit`);
+    navigate(`/admin/edit/`);
   };
 
   if (loading) return <p>Loading...</p>;

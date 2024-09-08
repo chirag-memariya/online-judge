@@ -17,9 +17,9 @@ const CreateProblem = () => {
   const navigate = useNavigate();
 
   // Check if the user is an admin
-  if (!isAdmin) {
-    return <div>Access Denied: You do not have the required permissions to view this page.</div>;
-  }
+  // if (!isAdmin) {
+    // return <div>Access Denied: You do not have the required permissions to view this page.</div>;
+  // }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -45,7 +45,7 @@ const CreateProblem = () => {
       }
       setSuccess(data.message);
       setLoading(false);
-      navigate('/');
+      navigate('/admin/problems');
     } catch (err) {
       console.error('Error creating problem:', err);
       setError('Problem creation failed. Please try again.');

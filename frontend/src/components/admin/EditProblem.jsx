@@ -11,16 +11,16 @@ const EditProblem = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
-  const [problemId,setProblemId] = useState('66d37fd690af794a439d887a');
+  // const [problemId,setProblemId] = useState('66d37fd690af794a439d887a');
 
   const { isAdmin } = useAuth();
   const navigate = useNavigate();
-//   const { id } = useParams(); // Get the problem ID from the URL
+  const { problemId } = useParams(); // Get the problem ID from the URL
 
   // Check if the user is an admin
-  if (!isAdmin) {
-    return <div>Access Denied: You do not have the required permissions to view this page.</div>;
-  }
+  // if (!isAdmin) {
+    // return <div>Access Denied: You do not have the required permissions to view this page.</div>;
+  // }
 
   // Fetch the existing problem data
   useEffect(() => {
@@ -76,7 +76,7 @@ const EditProblem = () => {
 
       setSuccess(data.message);
       setLoading(false);
-      navigate('/'); // Navigate to home or another page on success
+      navigate('/admin/problems'); // Navigate to home or another page on success
     } catch (err) {
       console.error('Error updating problem:', err);
       setError('Problem update failed. Please try again.');

@@ -5,7 +5,7 @@ const { exec } = require('child_process');
 const outputPath = path.join(__dirname,'outputs/Cpp');
 
 if(!fs.existsSync(outputPath)){
-    fs.mkdirSync(outputPath);
+    fs.mkdirSync(outputPath, { recursive: true });
 }
 
 const executeCpp = async (filePath,inputFilePath)=>{
