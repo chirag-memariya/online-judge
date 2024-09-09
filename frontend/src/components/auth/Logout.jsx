@@ -9,7 +9,7 @@ const Logout = () => {
   const handleLogout = async () => {
     try {
       await logout(); // Call the logout function from AuthContext
-      navigate('/login'); // Redirect to login page after logout
+      navigate('/'); // Redirect to login page after logout
     } catch (error) {
       console.error('Error logging out:', error);
     }

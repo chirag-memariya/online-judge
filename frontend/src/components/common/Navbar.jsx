@@ -32,6 +32,7 @@ export default function Navbar() {
     try {
       await logout();
       console.log('Logout successful');
+      navigate('/');
     } catch (error) {
       console.error('Error logging out:', error);
     }

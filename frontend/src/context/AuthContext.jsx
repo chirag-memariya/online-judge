@@ -102,7 +102,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     // register function
-    const register = async (firstname, lastname, email, password, dob) => {
+    const register = async (firstname, lastname, email, password, date_of_birth) => {
         setLoading(true);
         try {
             const response = await fetch('http://localhost:8000/auth/register', {
@@ -110,7 +110,7 @@ export const AuthProvider = ({ children }) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ firstname, lastname, email, password, dob }),
+                body: JSON.stringify({ firstname, lastname, email, password, date_of_birth }),
                 credentials: 'include',
             });
             const data = await response.json();

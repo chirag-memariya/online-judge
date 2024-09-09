@@ -10,26 +10,60 @@ router.post('/create', async (req, res) => {
     try {
         const { problem, user, verdict, solution, execution_time } = req.body;
 
-        // Log to check the received values
         console.log("Received submission data:", { problem, user, verdict, solution, execution_time });
-
-        // Check if all required fields are provided
         if (!(problem && user && verdict && solution)) {
             return res.status(400).send("All fields (problem, user, verdict, solution) are required.");
         }
 
-        // Ensure problem and user are valid ObjectId references
         if (!mongoose.Types.ObjectId.isValid(problem) || !mongoose.Types.ObjectId.isValid(user)) {
             return res.status(400).send("Invalid problem or user ID.");
         }
 
-        // Ensure execution_time is a number
         if (typeof execution_time !== 'number') {
             return res.status(400).json({ error: "Execution time must be a number." });
         }
 
         session = await mongoose.startSession();
         session.startTransaction();
+
+        // Check for previous accepted submission before creating a new one
+        const previousSubmission = await Submission.findOne({
+            problem,
+            user,
+            verdict: 'Accepted'
+        }).session(session);
+
+        console.log("Previous submission found:", previousSubmission);
+
+        if (!previousSubmission && verdict === 'Accepted') {
+            console.log("No previous accepted submission found. Proceeding with score update.");
+            
+            // Fetch problem data to calculate score increment
+            const problemData = await Problem.findById(problem).session(session);
+            if (!problemData) {
+                throw new Error('Problem not found.');
+            }
+            
+            const difficultyPoints = {
+                easy: 2,
+                medium: 4,
+                hard: 8
+            };
+            const pointValue = difficultyPoints[problemData.difficulty] || 0;
+            console.log("Points to Add:", pointValue);
+
+            const updatedUser = await User.findByIdAndUpdate(
+                user,
+                { $inc: { score: pointValue } },
+                { session, new: true }
+            );
+            console.log("Updated User:", updatedUser);
+            if (!updatedUser) {
+                throw new Error("Failed to update the user score.");
+            }
+        } else {
+            console.log("User already has an accepted submission for this problem. Score not updated.");
+        }
 
         // Create a new submission
         const submission = await Submission.create(
@@ -43,91 +77,7 @@ router.post('/create', async (req, res) => {
             { session }
         );
 
-        const difficultyPoints = {
-            easy: 1,
-            medium: 2,
-            hard: 3
-        };
-
-        if (verdict === 'Accepted') {
-
-            // const problemData = await Problem.findById(problem).session(session);
-            // if (!problemData) {
-            //     throw new Error('Problem not found.');
-            // }
-            // // const pointValue = 5;
-            // const pointValue = difficultyPoints[problemData.difficulty] || 0;
-
-            // // Log the problem data and point value for debugging
-            // console.log("Problem Data:", problemData);
-            // console.log("Points to Add:", pointValue)
-
-            // try {
-            //     console.log("Checking for previous submission with params:", { problem, user, verdict: 'Accepted' });
-            //     const previousSubmission = await Submission.findOne({
-            //         problem,
-            //         user,
-            //         verdict: 'Accepted'
-            //     }).session(session);
-
-            //     console.log("Previous submission found:", previousSubmission);
-
-            //     if (!previousSubmission) {
-            //         console.log(`Updating user ${user} score by ${pointValue} points.`);
-            //         const updatedUser = await User.findByIdAndUpdate(
-            //             user,
-            //             { $inc: { score: pointValue } },
-            //             { session, new: true }
-            //         );
-            //         console.log("Updated User:", updatedUser);
-            //         if (!updatedUser) {
-            //             throw new Error("Failed to update the user score.");
-            //         }
-            //     } else {
-            //         console.log("User already has an accepted submission for this problem. Score not updated.");
-            //         console.log("Previous submission details:", {
-            //             id: previousSubmission._id,
-            //             problem: previousSubmission.problem,
-            //             user: previousSubmission.user,
-            //             verdict: previousSubmission.verdict,
-            //             createdAt: previousSubmission.createdAt
-            //         });
-            //     }
-            // } catch (error) {
-            //     console.error("Error during score update:", error);
-            //     throw error;  // Re-throw to trigger transaction abort
-            // }
-
-            console.log("Verdict is Accepted, proceeding with score update");
-            
-            const problemData = await Problem.findById(problem).session(session);
-            console.log("Problem Data:", problemData);
-            
-            if (!problemData) {
-                throw new Error('Problem not found.');
-            }
-            
-            const pointValue = difficultyPoints[problemData.difficulty] || 0;
-            console.log("Points to Add:", pointValue);
-
-            try {
-                console.log(`Updating user ${user} score by ${pointValue} points.`);
-                const updatedUser = await User.findByIdAndUpdate(
-                    user,
-                    { $inc: { score: pointValue } },
-                    { session, new: true }
-                );
-                console.log("Updated User:", updatedUser);
-                if (!updatedUser) {
-                    throw new Error("Failed to update the user score.");
-                }
-            } catch (error) {
-                console.error("Error during score update:", error);
-                throw error;  // Re-throw to trigger transaction abort
-            }
-        } else {
-            console.log("Verdict is not Accepted. No score update needed.");
-        }
+        console.log("New submission created successfully.");
 
         console.log("Committing transaction");
         await session.commitTransaction();
@@ -150,6 +100,9 @@ router.post('/create', async (req, res) => {
         }
     }
 });
+
+
+
 
 router.get('/', async (req, res) => {
     try {
@@ -222,5 +175,20 @@ router.delete('/delete/:id', async (req, res) => {
         res.status(500).send("Deleting submission failed. Please try again.");
     }
 });
+
+router.delete('/delete-all', async (req, res) => {
+    try {
+        const result = await Submission.deleteMany({}); // Delete all submissions
+
+        res.status(200).json({
+            message: "All submissions deleted successfully.",
+            deletedCount: result.deletedCount, // Number of deleted submissions
+        });
+    } catch (error) {
+        console.error("Error: deleting all submissions failed! " + error);
+        res.status(500).send("Deleting all submissions failed. Please try again.");
+    }
+});
+
 
 module.exports = router;
