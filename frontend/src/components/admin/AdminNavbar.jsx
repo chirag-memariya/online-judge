@@ -4,21 +4,24 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useAuth } from '../../context/AuthContext';
 import markLogo from '../../assets/home_icon.svg';
 import profileLogo from '../../assets/person-male--v2.png';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 // Utility function to handle class names
 const navLinkClasses = (current) => 
   `rounded-md px-3 py-2 text-sm font-medium ${current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}`;
-
 const navigation = [
   { name: 'Dashboard', href: '/admin-dashboard', current: true },
   { name: 'Problem List', href: '/admin-dashboard/problem-list', current: false },
   { name: 'User Management', href: '/admin-dashboard/user-management', current: false },
-];
+].map((item)=>({
+  ...item,
+  current: location.pathname==item.href,
+}));
 
 export default function AdminNavbar() {
   const { logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const handleProfileNavigation = () => navigate(`/admin/profile`);
 
   const handleLogout = async () => {

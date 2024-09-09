@@ -18,9 +18,9 @@ const EditProblem = () => {
   const { problemId } = useParams(); // Get the problem ID from the URL
 
   // Check if the user is an admin
-  // if (!isAdmin) {
-    // return <div>Access Denied: You do not have the required permissions to view this page.</div>;
-  // }
+  if (!isAdmin) {
+    return <div>Access Denied: You do not have the required permissions to view this page.</div>;
+  }
 
   // Fetch the existing problem data
   useEffect(() => {

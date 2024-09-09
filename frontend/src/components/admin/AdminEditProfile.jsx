@@ -14,17 +14,17 @@ const AdminEditProfile = () => {
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const { editUser, isAdmin } = useAuth(); // Assuming editUserById is available in AuthContext
+  const {userId, editUser, isAdmin } = useAuth(); // Assuming editUserById is available in AuthContext
 //   const { userId } = useParams(); // Get user ID from URL params
-const [userId,setUserId]=useState('66d9b7274f8c9d308fead1cd');
+// const [userId,setUserId]=useState('66d9b7274f8c9d308fead1cd');
   const navigate = useNavigate();
 
   useEffect(() => {
-    // if (!isAdmin) {
-    //   // Ensure only admin can access this page
-    //   setError('Access denied. Admin privileges required.');
-    //   return;
-    // }
+    if (!isAdmin) {
+      // Ensure only admin can access this page
+      setError('Access denied. Admin privileges required.');
+      return;
+    }
 
     const fetchUser = async () => {
       setLoading(true);
