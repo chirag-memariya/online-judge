@@ -24,48 +24,25 @@ import AdminProblemList from '../components/admin/AdminProblemList';
 import AdminEditProfile from '../components/admin/AdminEditProfile';
 import AdminLogin from '../components/auth/AdminLogin';
 import AdminProfile from '../components/admin/AdminProfile';
-import isAdmin from '../utils/authUtils';
 
 
 
 // import EditProfile from '../components/user/EditProfile';
 
 const AppRoutes = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isAdmin } = useAuth();
   return (
     <>
       <Router>
         <Routes>
           {/* Public Route */}
-          <Route path="/admin/usermanagement" element={<UserManagement />}></Route>
-          <Route path="/admin/user/edit/:userId" element={<AdminEditUser />}></Route>
-          
-          <Route path="/admin/login" element={<AdminLogin />}></Route>
-          <Route path="/admin/edit" element={<AdminEditProfile />}></Route>
-          
-          <Route path="/admin/add-admin" element={<AddAdminUser />}></Route>
-          <Route path="/admin/problems/edit/:problemId" element={<EditProblem />} />
-          <Route path="/admin/problems/create" element={<CreateProblem />} />
-          <Route path="/admin/problems" element={<AdminProblemList />} />
-
-
+    <Route path="/admin/login" element={<AdminLogin />}></Route>
 
           {/* user-dashboard */}
           <Route path="/" element={<Dashboard />}>
             <Route index element={<ProblemList />} />
             {/* <Route path="problemlist" element={<ProblemList />} /> */}
             <Route path="leaderboard" element={<Leaderboard />} />
-          </Route>
-
-          {/* admin-dashboard */}
-          <Route path="/admin-dashboard" element={<AdminDashboard />}>
-            <Route index element={<AdminProfile />} />
-            {/* <Route path="add-admin" element={<ProblemList />} /> */}
-            <Route path="problem-list" element={<AdminProblemList />} />
-            <Route path="user-management" element={<UserManagement />} />
-            <Route path="create-problem" element={<CreateProblem />} />
-
-
           </Route>
 
           <Route path="/user/profile/edit" element={<EditProfile />} />
@@ -78,7 +55,7 @@ const AppRoutes = () => {
           />
           <Route
             path="/admin/login"
-            element={isAuthenticated && isAdmin()  ? <Navigate to="/admin-dashboard" /> : <Login />}
+            element={isAuthenticated && isAdmin ? <Navigate to="/admin-dashboard" /> : <AdminLogin />}
           />
           <Route
             path="/register"
@@ -95,11 +72,33 @@ const AppRoutes = () => {
           )}
 
           {/* Admin Authenticated Routes */}
-          {isAuthenticated && isAdmin() && (
+          {isAuthenticated && isAdmin && (
             <>
+                        {/* admin-dashboard */}
+          <Route path="/admin-dashboard" element={<AdminDashboard />}>
+            <Route index element={<AdminProfile />} />
+            {/* <Route path="add-admin" element={<ProblemList />} /> */}
+            <Route path="problem-list" element={<AdminProblemList />} />
+            <Route path="user-management" element={<UserManagement />} />
+            <Route path="create-problem" element={<CreateProblem />} />
+
+
+          </Route>
+
+              <Route path="/admin/usermanagement" element={<UserManagement />}></Route>
+              <Route path="/admin/user/edit/:userId" element={<AdminEditUser />}></Route>
+
+              <Route path="/admin/edit" element={<AdminEditProfile />}></Route>
+
+              <Route path="/admin/add-admin" element={<AddAdminUser />}></Route>
+              <Route path="/admin/problems/edit/:problemId" element={<EditProblem />} />
+              <Route path="/admin/problems/create" element={<CreateProblem />} />
+              <Route path="/admin/problems" element={<AdminProblemList />} />
+
               <Route path="/admin/profile" element={<AdminProfile />} />
               <Route path="/admin/settings" element={<AdminSettings />} />
               <Route path="/admin/manage-users" element={<ManageUsers />} />
+              {/* <Route path="/admin/profile" element={<Navigate to="/admin/login" state={{ from: `/admin/profile` }} />} /> */}
 
             </>
           )}
@@ -110,10 +109,6 @@ const AppRoutes = () => {
               <Route path="/problem" element={<Navigate to="/login" state={{ from: '/problem', item: null }} />} />
               <Route path="/leaderboard" element={<Navigate to="/login" state={{ from: '/leaderboard' }} />} />
               <Route path="/user/profile" element={<Navigate to="/login" state={{ from: `/user/profile` }} />} />
-              <Route path="/admin/profile" element={<Navigate to="/admin/login" state={{ from: `/admin/profile` }} />} />
-              <Route path="/admin/home" element={<Navigate to="/login" />} />
-              <Route path="/admin/settings" element={<Navigate to="/login" />} />
-              <Route path="/admin/manage-users" element={<Navigate to="/login" />} />
             </>
           )}
 

@@ -8,9 +8,7 @@ const AdminLogin = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const { login } = useAuth(); // Assuming you have a function for admin login in AuthContext
-  const location = useLocation();
 
-  const from = location.state?.from || '/admin-dashboard';
 
   const handleSubmit = async (e) => {
     e.preventDefault();

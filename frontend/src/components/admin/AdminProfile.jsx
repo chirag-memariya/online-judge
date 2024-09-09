@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import isAdmin from '../../utils/authUtils';
 
 const AdminProfile = () => {
-  const { userId, deleteUser } = useAuth();
+  const { userId, isAdmin, deleteUser } = useAuth();
   const [admin, setAdmin] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -24,7 +23,7 @@ const AdminProfile = () => {
       }
     };
 
-    if (isAdmin()) {
+    if (isAdmin) {
       fetchAdminData();
     } else {
       setError('Access denied. You are not an admin.');
@@ -74,7 +73,6 @@ const AdminProfile = () => {
           <p><strong>Email:</strong> {admin.email}</p>
           <p><strong>Date of Birth:</strong> {admin.date_of_birth ? new Date(admin.date_of_birth).toLocaleDateString() : 'N/A'}</p>
           <p><strong>Registration Date:</strong> {new Date(admin.registration_date).toLocaleDateString()}</p>
-          <p><strong>Role:</strong> Admin</p>
 
           {/* Buttons for Edit and Delete */}
           <div className="mt-4 flex gap-4">

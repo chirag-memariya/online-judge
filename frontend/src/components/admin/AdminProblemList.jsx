@@ -36,6 +36,9 @@ const AdminProblemList = () => {
     };
 
     const handleDelete = async (id) => {
+        if (!window.confirm('Are you sure you want to delete this problem? This action cannot be undone.')) {
+            return; // Exit if user cancels
+          }
         try {
             await axios.delete(`http://localhost:8000/problems/delete/${id}`);
             console.log("Problem deleted successfully");
