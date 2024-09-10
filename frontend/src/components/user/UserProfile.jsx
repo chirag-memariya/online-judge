@@ -43,12 +43,23 @@ const UserProfile = () => {
     navigate(`/user/profile/edit`);
   };
 
+  const handleViewAllSubmissions = () => {
+    navigate(`/user/all-user-submissions`);
+  };
+  
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">User Dashboard</h1>
+      <button
+            onClick={handleViewAllSubmissions}
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+          >
+            All Submissions
+          </button>
       {user ? (
         <div className="bg-white shadow rounded-lg p-4">
           <h2 className="text-xl font-semibold mb-2">User Details</h2>
@@ -73,6 +84,7 @@ const UserProfile = () => {
             >
               Delete User
             </button>
+
           </div>
 
           {/* Additional sections like Activity or Achievements */}

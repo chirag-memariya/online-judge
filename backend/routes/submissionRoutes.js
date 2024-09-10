@@ -103,7 +103,7 @@ router.post('/create', async (req, res) => {
 
 
 
-
+//all submission 
 router.get('/', async (req, res) => {
     try {
         const submissions = await Submission.find()
@@ -116,6 +116,7 @@ router.get('/', async (req, res) => {
     }
 });
 
+//submission id
 router.get('/:id', async (req, res) => {
     try {
         const submission = await Submission.findById(req.params.id)
@@ -132,6 +133,63 @@ router.get('/:id', async (req, res) => {
         res.status(500).send("Fetching submission failed. Please try again.");
     }
 });
+
+//user id
+router.get('/user/:id', async (req, res) => {
+    try {
+        const submissions = await Submission.find({ user: req.params.id }) // Find all submissions by user ID
+            .populate('problem', 'title statement') // Populate problem details (title, statement)
+            .populate('user', 'firstname lastname'); // Populate user's firstname and lastname
+
+        if (!submissions || submissions.length === 0) {
+            return res.status(404).send("No submissions found for this user.");
+        }
+
+        res.status(200).json(submissions);
+    } catch (error) {
+        console.error("Error: fetching submissions failed! " + error);
+        res.status(500).send("Fetching submissions failed. Please try again.");
+    }
+});
+
+//problem id
+router.get('/problem/:id', async (req, res) => {
+    try {
+        const submissions = await Submission.find({ problem: req.params.id }) // Find all submissions by problem ID
+            .populate('problem', 'title statement') // Populate problem details (title, statement)
+            .populate('user', 'firstname lastname'); // Populate user's firstname and lastname
+
+        if (!submissions || submissions.length === 0) {
+            return res.status(404).send("No submissions found for this problem.");
+        }
+
+        res.status(200).json(submissions);
+    } catch (error) {
+        console.error("Error: fetching submissions failed! " + error);
+        res.status(500).send("Fetching submissions failed. Please try again.");
+    }
+});
+
+//get submission base on userId && problemId
+router.get('/user/:userId/problem/:problemId', async (req, res) => {
+    const { userId, problemId } = req.params;
+
+    try {
+        const submissions = await Submission.find({ user: userId, problem: problemId })
+            .populate('problem', 'title statement') // Populate problem details
+            .populate('user', 'firstname lastname'); // Populate user details
+
+        if (!submissions || submissions.length === 0) {
+            return res.status(404).send("No submissions found for this user and problem combination.");
+        }
+
+        res.status(200).json(submissions);
+    } catch (error) {
+        console.error("Error: fetching submissions failed! " + error);
+        res.status(500).send("Fetching submissions failed. Please try again.");
+    }
+});
+
 
 router.put('/edit/:id', async (req, res) => {
     try {

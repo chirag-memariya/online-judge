@@ -9,8 +9,6 @@ const CodeEditor = ({ problemId }) => {
     const [code, setCode] = useState(``);
     const [testCases, setTestCases] = useState(``);
     const { userId } = useAuth();
-    // Console log to verify problemId is received
-    // console.log("ProblemId received in CodeEditor:", problemId);
 
 
     const codeTemplates = {
@@ -224,81 +222,97 @@ print(sum)
 
     return (
         <>
-            <div className="flex-1 p-4 bg-white shadow rounded">
+<div className="flex-1 p-6 bg-white dark:bg-gray-800 shadow-md rounded-lg">
+  <div className="flex flex-col gap-6">
 
-                <div className="flex flex-col justify-center items-center">
+    {/* Header */}
+    <div className="text-center mb-6">
+      <h1 className="text-3xl sm:text-4xl font-extrabold leading-normal tracking-tight text-gray-900 dark:text-white">
+        Code Editor
+      </h1>
+      <p className="text-lg font-regular uppercase mt-4 text-gray-700 dark:text-gray-300">
+        Problem ID: {problemId}
+      </p>
+    </div>
 
-                    <h1>CodeEditor</h1>
-                    <p>Problem ID: {problemId}</p>
-                    <select
-                        value={language}
-                        onChange={(e) => setLanguage(e.target.value)}
-                    >
-                        <option value='cpp'>C++</option>
-                        <option value='java'>Java</option>
-                        <option value='py'>Python</option>
-                        <option value='go'>Golang</option>
-                        <option value='js'>JavaScript</option>
-                    </select>
+    {/* Language Selector */}
+    <div className="mt-4">
+      <h4 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Select Language</h4>
+      <select
+        value={language}
+        onChange={(e) => setLanguage(e.target.value)}
+        className="p-2 w-full border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+      >
+        <option value="cpp">C++</option>
+        <option value="java">Java</option>
+        <option value="py">Python</option>
+        <option value="go">Golang</option>
+        <option value="js">JavaScript</option>
+      </select>
+    </div>
+
+    {/* Code Editor */}
+    <div className="mt-6">
+      <h4 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Your Code</h4>
+      <textarea
+        id="message"
+        rows="7"
+        className="block p-3 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        value={code}
+        onChange={(e) => setCode(e.target.value)}
+        placeholder="Write code here..."
+      />
+    </div>
+
+    {/* Input Field */}
+    <div className="mt-6">
+      <h4 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Input</h4>
+      <textarea
+        id="input"
+        rows="3"
+        className="block p-3 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        placeholder="Provide input here..."
+      />
+    </div>
+
+    {/* Output Field */}
+    <div className="mt-6">
+      <h4 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Output</h4>
+      <textarea
+        id="output"
+        rows="5"
+        readOnly
+        className="block p-3 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        value={output}
+        placeholder="Output will appear here..."
+      />
+    </div>
+
+    {/* Run and Submit Buttons */}
+    <div className="flex gap-4 mt-6">
+      <button
+        onClick={handleRun}
+        className="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-gray-900 rounded-lg bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800"
+      >
+        <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+          Run
+        </span>
+      </button>
+      <button
+        onClick={handleSubmit}
+        className="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-gray-900 rounded-lg bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800"
+      >
+        <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+          Submit
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
 
 
-                    <label htmlFor="message" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Code</label>
-                    <textarea
-                        id="message"
-                        rows="7"
-                        className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        value={code}
-                        onChange={(e) => setCode(e.target.value)}
-                        placeholder="Write code here...">
-                    </textarea>
-
-
-                    <label htmlFor="input" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        Input
-                    </label>
-                    <textarea
-                        id="input"
-                        rows="3"
-                        className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        value={input}
-                        onChange={(e) => {
-                            setInput(e.target.value);
-                        }}
-                        placeholder="Provide input here...">
-                    </textarea>
-
-                    <label htmlFor="output" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        Output
-                    </label>
-                    <textarea
-                        id="output"
-                        rows="5"
-                        readOnly
-                        className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        value={output}
-                        placeholder="Output will appear here...">
-                    </textarea>
-
-                    <button
-                        onClick={() => {
-                            handleRun();
-                        }}
-                        className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800">
-                        <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                            Run
-                        </span>
-                    </button>
-                    <button
-                        onClick={() => {
-                            handleSubmit();
-                        }}
-                        className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800">
-                        <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                            Submit
-                        </span>
-                    </button>
-                </div>
-            </div>
 
         </>
     )

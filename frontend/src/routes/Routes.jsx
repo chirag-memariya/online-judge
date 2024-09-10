@@ -6,7 +6,6 @@ import Problem from '../pages/Problem';
 import ProblemList from '../pages/ProblemList';
 import Leaderboard from '../pages/Leaderboard';
 import NotFound from '../pages/NotFound';
-import AdminHome from '../pages/admin/AdminHome';
 import AdminSettings from '../pages/admin/AdminSettings';
 import ManageUsers from '../pages/admin/ManageUsers';
 import { useAuth } from '../context/AuthContext'; // Import useAuth hook
@@ -19,11 +18,15 @@ import UserManagement from '../components/admin/UserManagement';
 import AdminEditUser from '../components/admin/AdminEditUser';
 import AddAdminUser from '../components/admin/AddAdminUser';
 import AdminDashboard from '../components/admin/AdminDashboard';
-import AdminNavbar from '../components/admin/AdminNavbar';
 import AdminProblemList from '../components/admin/AdminProblemList';
 import AdminEditProfile from '../components/admin/AdminEditProfile';
 import AdminLogin from '../components/auth/AdminLogin';
 import AdminProfile from '../components/admin/AdminProfile';
+import UserSubmissions from '../components/user/UserSubmissions';
+import ProblemSubmissions from '../components/problem/ProblemSubmissions';
+import SubmissionDetailPage from '../components/user/SubmissionsDetailPage';
+import SubmissionList from '../pages/SubmissionList';
+import MySubmissions from '../pages/user/MySubmissions';
 
 
 
@@ -36,16 +39,18 @@ const AppRoutes = () => {
       <Router>
         <Routes>
           {/* Public Route */}
-    <Route path="/admin/login" element={<AdminLogin />}></Route>
-
+          <Route path="/admin/login" element={<AdminLogin />}></Route>
           {/* user-dashboard */}
           <Route path="/" element={<Dashboard />}>
             <Route index element={<ProblemList />} />
             {/* <Route path="problemlist" element={<ProblemList />} /> */}
             <Route path="leaderboard" element={<Leaderboard />} />
+
+            {/* All submissions */}
+            <Route path="submissionlist" element={<SubmissionList />} />
+
           </Route>
 
-          <Route path="/user/profile/edit" element={<EditProfile />} />
 
 
           {/* Redirect to Home if already authenticated */}
@@ -66,24 +71,36 @@ const AppRoutes = () => {
           {isAuthenticated && (
             <>
               <Route path="/problem" element={<Problem />} />
-              {/* <Route path="/leaderboard" element={<Leaderboard />} /> */}
               <Route path="/user/profile" element={<UserProfile />} />
+              <Route path="/user/profile/edit" element={<EditProfile />} />
+
+              
+              {/* Use all submissions */}
+              <Route path="/user/all-user-submissions" element={<UserSubmissions />}></Route>
+
+              {/* All Submissions of problem */}
+              <Route path="/problem/submissions" element={<ProblemSubmissions />}></Route>
+              {/* MySubmissions */}
+              <Route path="/user-problem/submissions" element={<MySubmissions />}></Route>
+
+              <Route path="/user/submissions/submission-detail/:submissionId" element={<SubmissionDetailPage />}></Route>
+
             </>
           )}
 
           {/* Admin Authenticated Routes */}
           {isAuthenticated && isAdmin && (
             <>
-                        {/* admin-dashboard */}
-          <Route path="/admin-dashboard" element={<AdminDashboard />}>
-            <Route index element={<AdminProfile />} />
-            {/* <Route path="add-admin" element={<ProblemList />} /> */}
-            <Route path="problem-list" element={<AdminProblemList />} />
-            <Route path="user-management" element={<UserManagement />} />
-            <Route path="create-problem" element={<CreateProblem />} />
+              {/* admin-dashboard */}
+              <Route path="/admin-dashboard" element={<AdminDashboard />}>
+                <Route index element={<AdminProfile />} />
+                {/* <Route path="add-admin" element={<ProblemList />} /> */}
+                <Route path="problem-list" element={<AdminProblemList />} />
+                <Route path="user-management" element={<UserManagement />} />
+                <Route path="create-problem" element={<CreateProblem />} />
 
 
-          </Route>
+              </Route>
 
               <Route path="/admin/usermanagement" element={<UserManagement />}></Route>
               <Route path="/admin/user/edit/:userId" element={<AdminEditUser />}></Route>

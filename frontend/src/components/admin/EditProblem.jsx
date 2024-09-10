@@ -11,7 +11,6 @@ const EditProblem = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
-  // const [problemId,setProblemId] = useState('66d37fd690af794a439d887a');
 
   const { isAdmin } = useAuth();
   const navigate = useNavigate();
@@ -27,7 +26,6 @@ const EditProblem = () => {
     const fetchProblem = async () => {
       setLoading(true);
       try {
-        // const response = await axios.get(`http://localhost:8000/problems/${id}`);66db0d9f81ea271b245079e7
         const response = await axios.get(`http://localhost:8000/problems/${problemId}`);
         const problem = response.data;
 

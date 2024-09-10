@@ -12,7 +12,7 @@ const navLinkClasses = (current) =>
 const navigation = [
   { name: 'Dashboard', href: '/', current: true },
   { name: 'Leaderboard', href: '/leaderboard', current: false },
-  { name: 'Projects', href: '#', current: false },
+  { name: 'Submissions', href: '/submissionlist', current: false },
   { name: 'Calendar', href: '#', current: false },
 ].map((item) => ({
   ...item,
