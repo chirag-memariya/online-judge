@@ -86,7 +86,7 @@ print(sum)
                 return;
             }
             try {
-                const response = await axios.get(`http://localhost:8000/testcases/problem/${problemId}`);
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/testcases/problem/${problemId}`);
                 const fetchedTestCases = response.data[0]?.cases || [];
                 setTestCases(fetchedTestCases);
             } catch (error) {
@@ -105,7 +105,7 @@ print(sum)
             input
         };
         try {
-            const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/run`, payload, {
+            const { data } = await axios.post(`${import.meta.env.VITE_COMPILER_URL}/run`, payload, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -150,7 +150,7 @@ print(sum)
             console.log("Input:", testCase.input);
 
             try {
-                const { data } = await axios.post(import.meta.env.VITE_BACKEND_URL, payload, {
+                const { data } = await axios.post(`${import.meta.env.VITE_COMPILER_URL}/run`, payload, {
                     headers: {
                         'Content-Type': 'application/json'
                     }
@@ -203,7 +203,7 @@ print(sum)
 
 
         try {
-            const response = await axios.post('http://localhost:8000/submissions/create', submissionPayload, {
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/submissions/create`, submissionPayload, {
                 headers: {
                     'Content-Type': 'application/json'
                 }

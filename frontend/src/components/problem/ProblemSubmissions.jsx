@@ -13,7 +13,7 @@ const ProblemSubmissions = () => {
   useEffect(() => {
     const fetchSubmissions = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/submissions/problem/${problemId}`);
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/submissions/problem/${problemId}`);
         setSubmissions(response.data);
       } catch (err) {
         setError(err.message);

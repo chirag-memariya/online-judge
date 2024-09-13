@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }) => {
         const fetchIsAdmin = async () => {
             if (userId) {
                 try {
-                    const response = await axios.get(`http://localhost:8000/users/${userId}`);
+                    const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/users/${userId}`);
                     const user2 = response.data;
                     setIsAdmin(user2.role === "admin"); // Set isAdmin state
                 } catch (error) {
@@ -56,7 +56,7 @@ export const AuthProvider = ({ children }) => {
     const isAdminHepler = async (userId) =>{
         if (userId) {
             try {
-                const response = await axios.get(`http://localhost:8000/users/${userId}`);
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/users/${userId}`);
                 const user2 = response.data;
                 return user2.role === "admin"; // Set isAdmin state
             } catch (error) {
@@ -72,7 +72,7 @@ export const AuthProvider = ({ children }) => {
     const login = async (email, password) => {
         setLoading(true);
         try {
-            const response = await fetch('http://localhost:8000/auth/login', {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -105,7 +105,7 @@ export const AuthProvider = ({ children }) => {
     const register = async (firstname, lastname, email, password, date_of_birth) => {
         setLoading(true);
         try {
-            const response = await fetch('http://localhost:8000/auth/register', {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -138,7 +138,7 @@ export const AuthProvider = ({ children }) => {
     const editUser = async (id, firstname, lastname, email, password, date_of_birth) => {
         setLoading(true);
         try {
-            const response = await fetch(`http://localhost:8000/auth/edit/${id}`, {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/edit/${id}`, {
                 method: 'PUT', // or 'PATCH' depending on your API
                 headers: {
                     'Content-Type': 'application/json',
@@ -169,7 +169,7 @@ export const AuthProvider = ({ children }) => {
     const deleteUser = async (id) => {
         setLoading(true);
         try {
-            const response = await fetch(`http://localhost:8000/users/delete/${id}`, {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/users/delete/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -205,7 +205,7 @@ export const AuthProvider = ({ children }) => {
     const logout = async () => {
         setLoading(true);
         try {
-            await fetch('http://localhost:8000/auth/logout', {
+            await fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/logout`, {
                 method: 'POST',
                 credentials: 'include',
             });

@@ -13,7 +13,7 @@ const SubmissionDetailPage = () => {
   useEffect(() => {
     const fetchSubmission = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/submissions/${submissionId}`);
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/submissions/${submissionId}`);
         setSubmission(response.data);
       } catch (err) {
         setError(err.message);

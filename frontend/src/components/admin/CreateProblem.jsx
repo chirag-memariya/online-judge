@@ -25,7 +25,7 @@ const CreateProblem = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:8000/problems/create', {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/problems/create`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

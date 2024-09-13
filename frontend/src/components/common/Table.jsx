@@ -37,7 +37,7 @@ const Table = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get("http://localhost:8000/problems");
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/problems`);http://localhost:8000
                 setItems(response.data);
             } catch (error) {
                 console.log("Error while fetching data.", error);

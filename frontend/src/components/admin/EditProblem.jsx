@@ -26,7 +26,7 @@ const EditProblem = () => {
     const fetchProblem = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`http://localhost:8000/problems/${problemId}`);
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/problems/${problemId}`);
         const problem = response.data;
 
         // Set the state with the fetched problem data
@@ -52,7 +52,7 @@ const EditProblem = () => {
     setSuccess('');
 
     try {
-      const response = await fetch(`http://localhost:8000/problems/edit/${problemId}`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/problems/edit/${problemId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

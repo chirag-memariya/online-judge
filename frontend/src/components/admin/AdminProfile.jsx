@@ -13,7 +13,7 @@ const AdminProfile = () => {
   useEffect(() => {
     const fetchAdminData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/users/${userId}`);
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/users/${userId}`);
         setAdmin(response.data);
       } catch (error) {
         setError('Error fetching admin data');

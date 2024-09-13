@@ -31,7 +31,7 @@ const AddAdminUser = () => {
         }
 
         try {
-            await axios.post('http://localhost:8000/auth/admin/add-admin',
+            await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/admin/add-admin`,
                 {firstname, lastname, email, password,date_of_birth:dob})
                 setSuccess('Admin added successfully!');
                 navigate('/admin/usermanagement');

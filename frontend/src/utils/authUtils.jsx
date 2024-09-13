@@ -5,7 +5,7 @@ const isAdmin = async () => {
   try {
     const userId = localStorage.getItem('userId');
     if (userId) {
-      const response = await axios.get(`http://localhost:8000/users/${userId}`);
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/users/${userId}`);
       const user = response.data;
       if (user.role === 'admin') {
         return true; // User is admin

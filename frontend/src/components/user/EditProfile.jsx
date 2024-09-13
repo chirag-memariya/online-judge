@@ -27,7 +27,7 @@ const EditUser = () => {
     const fetchUser = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`http://localhost:8000/users/${userId}`);
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/users/${userId}`);
         const user = response.data;
 
         // Set the state with the fetched user data

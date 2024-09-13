@@ -14,7 +14,7 @@ const UserList = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get("http://localhost:8000/users?sort=score");
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/users?sort=score`);
                 setItems(response.data);
             } catch (error) {
                 console.log("Error while fetching users.", error);

@@ -13,7 +13,7 @@ const UserProfile = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/users/${userId}`);
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/users/${userId}`);
         setUser(response.data);
       } catch (error) { 
         setError('Error fetching user data');

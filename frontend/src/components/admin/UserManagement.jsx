@@ -12,7 +12,7 @@ const UserManagement = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/users');
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/users`);
         setUsers(response.data);
       } catch (error) {
         setError('Error fetching users');
@@ -34,7 +34,7 @@ const UserManagement = () => {
       return;
     }
     try {
-      await axios.delete(`http://localhost:8000/users/delete/${userId}`);
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/users/delete/${userId}`);
       console.warn("User: "+userId+" deleted successfully!");
       setUsers(users.filter(user => user._id !== userId));
     } catch (error) {

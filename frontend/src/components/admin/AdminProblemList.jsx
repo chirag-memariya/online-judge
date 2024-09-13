@@ -16,7 +16,7 @@ const AdminProblemList = () => {
 
     const fetchProblems = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/problems');
+            const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/problems`);
             setItems(response.data);
         } catch (error) {
             console.log('Error while fetching data.', error);
@@ -40,7 +40,7 @@ const AdminProblemList = () => {
             return; // Exit if user cancels
           }
         try {
-            await axios.delete(`http://localhost:8000/problems/delete/${id}`);
+            await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/problems/delete/${id}`);
             console.log("Problem deleted successfully");
             fetchProblems();
         } catch (error) {

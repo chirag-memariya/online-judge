@@ -27,7 +27,7 @@ const AdminEditUser = () => {
     const fetchUser = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`http://localhost:8000/users/${userId}`);
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/users/${userId}`);
         const user = response.data;
 
         // Set the state with the fetched user data
@@ -58,7 +58,7 @@ const AdminEditUser = () => {
     }
 
     try {
-      await axios.put(`http://localhost:8000/auth/edit/${userId}`, {
+      await axios.put(`${import.meta.env.VITE_BACKEND_URL}/auth/edit/${userId}`, {
         firstname,
         lastname,
         email,

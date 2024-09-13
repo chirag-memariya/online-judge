@@ -15,8 +15,8 @@ app.use(express.json())
 app.use(cookieParser());
 app.use(
     cors({
-        // origin: CLIENT_URL, 'https://www.chigs.site'
-        origin: CLIENT_URL,
+        
+        origin: CLIENT_URL, // 'https://www.chigs.site'
         credentials: true,
     })
 );
