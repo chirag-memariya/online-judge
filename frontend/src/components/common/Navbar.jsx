@@ -13,7 +13,7 @@ const navigation = [
   { name: 'Dashboard', href: '/', current: true },
   { name: 'Leaderboard', href: '/leaderboard', current: false },
   { name: 'Submissions', href: '/submissionlist', current: false },
-  { name: 'Calendar', href: '#', current: false },
+  { name: 'Events', href: '#', current: false },
 ].map((item) => ({
   ...item,
   current: location.pathname === item.href,

@@ -12,6 +12,8 @@ const navLinkClasses = (current) =>
 const navigation = [
   { name: 'Dashboard', href: '/admin-dashboard', current: true },
   { name: 'Problem List', href: '/admin-dashboard/problem-list', current: false },
+  { name: 'Leaderboard', href: '/admin-dashboard/leaderboard', current: false },
+  { name: 'Submissions', href: '/admin-dashboard/submissionlist', current: false },
   { name: 'User Management', href: '/admin-dashboard/user-management', current: false },
 ].map((item)=>({
   ...item,

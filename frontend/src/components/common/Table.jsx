@@ -6,6 +6,8 @@ import { useAuth } from '../../context/AuthContext';
 const Table = () => {
     const navigate = useNavigate();
     const { isAuthenticated } = useAuth();
+    const [selectedIndex, setSelectedIndex] = useState(null);
+    const [items, setItems] = useState([]);
 
     const handleNavigation = (item) => {
         if (!isAuthenticated) {
@@ -15,26 +17,22 @@ const Table = () => {
         }
     };
 
-    const [selectedIndex, setSelectedIndex] = useState([]);
-    const [items, setItems] = useState([]);
-
     const handleClick = (index) => {
         setSelectedIndex(index);
     };
 
-        // Utility function to determine button color based on difficulty
-        const getDifficultyButtonClasses = (difficulty) => {
-            switch (difficulty) {
-                case 'easy':
-                    return 'bg-green-500 hover:bg-green-600';
-                case 'medium':
-                    return 'bg-yellow-500 hover:bg-yellow-600';
-                case 'hard':
-                    return 'bg-red-500 hover:bg-red-600';
-                default:
-                    return 'bg-gray-500 hover:bg-gray-600';
-            }
-        };
+    const getDifficultyButtonClasses = (difficulty) => {
+        switch (difficulty) {
+            case 'easy':
+                return 'bg-green-500 hover:bg-green-600';
+            case 'medium':
+                return 'bg-yellow-500 hover:bg-yellow-600';
+            case 'hard':
+                return 'bg-red-500 hover:bg-red-600';
+            default:
+                return 'bg-gray-500 hover:bg-gray-600';
+        }
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -73,8 +71,12 @@ const Table = () => {
                         <tr
                             key={item.id || index}
                             className={`cursor-pointer transition duration-200 ease-in-out transform hover:translate-x-4 ${
-                                index === selectedIndex ? "bg-indigo-100 dark:bg-indigo-900" : "bg-white dark:bg-gray-800"
-                            } border-b dark:border-gray-700`}
+                                index % 2 === 0
+                                    ? "bg-white dark:bg-gray-800"
+                                    : "bg-gray-50 dark:bg-gray-700"
+                            } border-b dark:border-gray-700 ${
+                                index === selectedIndex ? "bg-indigo-100 dark:bg-indigo-900" : ""
+                            }`}
                             onMouseEnter={() => handleClick(index)}
                             onMouseLeave={() => setSelectedIndex(null)}
                         >
@@ -97,6 +99,6 @@ const Table = () => {
             </table>
         </div>
     );
-}
+};
 
 export default Table;

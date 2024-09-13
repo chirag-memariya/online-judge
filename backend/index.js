@@ -7,10 +7,17 @@ dotenv.config();
 
 DBConnection();
 
-app.use(cors({
-    origin: 'http://localhost:5173',
-    credentials: true // To allow cookies to be sent and received
-}));
+// app.use(cors({
+//     origin: 'http://localhost:5173',
+//     credentials: true // To allow cookies to be sent and received
+// }));
+
+app.use(
+    cors({
+        origin: process.env.CLIENT_URL,
+        credentials: true,
+    })
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

@@ -40,15 +40,14 @@ const AppRoutes = () => {
         <Routes>
           {/* Public Route */}
           <Route path="/admin/login" element={<AdminLogin />}></Route>
+
           {/* user-dashboard */}
           <Route path="/" element={<Dashboard />}>
             <Route index element={<ProblemList />} />
             {/* <Route path="problemlist" element={<ProblemList />} /> */}
             <Route path="leaderboard" element={<Leaderboard />} />
-
             {/* All submissions */}
             <Route path="submissionlist" element={<SubmissionList />} />
-
           </Route>
 
 
@@ -96,6 +95,9 @@ const AppRoutes = () => {
                 <Route index element={<AdminProfile />} />
                 {/* <Route path="add-admin" element={<ProblemList />} /> */}
                 <Route path="problem-list" element={<AdminProblemList />} />
+            <Route path="leaderboard" element={<Leaderboard />} />
+            <Route path="submissionlist" element={<SubmissionList />} />
+
                 <Route path="user-management" element={<UserManagement />} />
                 <Route path="create-problem" element={<CreateProblem />} />
 

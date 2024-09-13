@@ -66,7 +66,7 @@ const AdminEditUser = () => {
         date_of_birth: dob,
       });
       setSuccess('User updated successfully.');
-      navigate('/admin/usermanagement'); // Navigate to admin user management page or another page on success
+      navigate('/admin-dashboard/user-management'); // Navigate to admin user management page or another page on success
     } catch (err) {
       console.error('Error updating user:', err);
       setError('User update failed. Please try again.');

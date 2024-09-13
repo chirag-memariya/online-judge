@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const { generateFile } = require('./generateFile/generateFile.js');
 const { generateInputFile } = require('./generateFile/generateInputFile.js');
 const { executeCpp } = require('./execute/executeCpp.js');
@@ -10,8 +11,16 @@ const { executeJs } = require('./execute/executeJavaScript.js');
 
 const app = express();
  
-app.use(cors());
 app.use(express.json())
+app.use(cookieParser());
+app.use(
+    cors({
+        // origin: CLIENT_URL, 'https://www.chigs.site'
+        origin: CLIENT_URL,
+        credentials: true,
+    })
+);
+
 app.use(express.urlencoded({extended: true}));
 
 app.get("/",(req,res)=>{

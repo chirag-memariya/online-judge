@@ -105,7 +105,7 @@ print(sum)
             input
         };
         try {
-            const { data } = await axios.post(import.meta.env.VITE_BACKEND_URL, payload, {
+            const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/run`, payload, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
