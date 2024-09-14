@@ -1,0 +1,7 @@
+{
+    "rewrites": [
+      { "source": "/admin-dashboard/:path*", "destination": "/admin-dashboard" },
+      { "source": "/:path*", "destination": "/" }
+    ]
+  }
+  
