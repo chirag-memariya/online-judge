@@ -70,6 +70,7 @@ const AdminLogin = () => {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  autocomplete="current-password"
                 />
               </div>
               <button

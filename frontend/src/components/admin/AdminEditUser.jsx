@@ -163,6 +163,7 @@ const AdminEditUser = () => {
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                autocomplete="new-password"
               />
             </div>
             <div>
@@ -176,6 +177,7 @@ const AdminEditUser = () => {
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
+                autocomplete="new-password"
               />
             </div>
 

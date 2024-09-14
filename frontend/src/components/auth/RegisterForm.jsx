@@ -120,6 +120,7 @@ const RegisterForm = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              autocomplete="new-password"
             />
           </div>
           <div>
@@ -135,6 +136,7 @@ const RegisterForm = () => {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
+              autocomplete="new-password"
             />
           </div>
           <div className="flex items-start">
