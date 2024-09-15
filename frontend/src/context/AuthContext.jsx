@@ -238,5 +238,15 @@ export const AuthProvider = ({ children }) => {
         isAuthenticated: !!authData,
     };
 
+    
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="ring"></div>
+        <span>Loading...</span>
+      </div>
+    );
+  }
+
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

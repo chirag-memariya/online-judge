@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const UserSubmissions = () => {
   const [submissions, setSubmissions] = useState([]);
   // const [userId,setUserId] = useState('66df3769911f976301fb4677');
   const {userId} = useAuth();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedSubmission, setSelectedSubmission] = useState(null);
@@ -39,9 +41,15 @@ const closeModal = () => {
   setSelectedSubmission(null);
 };
 
-  if (loading) {
-    return <div>Loading submissions...</div>;
-  }
+
+if (loading) {
+  return (
+    <div className="loading-container">
+      <div className="ring"></div>
+      <span>Loading...</span>
+    </div>
+  );
+}
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -50,9 +58,25 @@ const closeModal = () => {
   if (submissions.length === 0) {
     return <div>No submissions found for this user.</div>;
   }
+  const handleHomeClick = () => {
+    navigate('/');
+  };
+
 
   return (
 <div className="relative overflow-x-auto shadow-md sm:rounded-lg bg-white dark:bg-gray-800 p-4">
+  {/* Home Button */}
+  <button
+  onClick={handleHomeClick}
+  className="fixed right-4 top-4 bg-teal-600 hover:bg-teal-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-200 ease-in-out z-50"
+>
+  Home
+</button>
+
+
+
+
+
   <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">User Submissions</h2>
   <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

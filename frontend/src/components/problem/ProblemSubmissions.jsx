@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 const ProblemSubmissions = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const problemId = location.state?.problemId;
   const [submissions, setSubmissions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,8 +26,14 @@ const ProblemSubmissions = () => {
     fetchSubmissions();
   }, [problemId]);
 
+
   if (loading) {
-    return <div>Loading submissions...</div>;
+    return (
+      <div className="loading-container">
+        <div className="ring"></div>
+        <span>Loading...</span>
+      </div>
+    );
   }
 
   if (error) {
@@ -36,11 +43,23 @@ const ProblemSubmissions = () => {
   if (submissions.length === 0) {
     return <div>No submissions found for this problem.</div>;
   }
+  const handleHomeClick = () => {
+    navigate('/');
+  };
+
 
   return (
 <div className="relative overflow-x-auto shadow-md sm:rounded-lg bg-white dark:bg-gray-800 p-4">
-  <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
-    Submissions
+  {/* Home Button */}
+  <button
+  onClick={handleHomeClick}
+  className="fixed right-4 top-4 bg-teal-600 hover:bg-teal-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-200 ease-in-out z-50"
+>
+  Home
+</button>
+
+  <h2 className="text-center text-3xl font-semibold text-gray-900 dark:text-white mb-4">
+    All Submissions
   </h2>
   <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

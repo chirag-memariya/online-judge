@@ -25,8 +25,15 @@ const SubmissionDetailPage = () => {
     fetchSubmission();
   }, [submissionId]);
 
+
+  
   if (loading) {
-    return <div>Loading submission details...</div>;
+    return (
+      <div className="loading-container">
+        <div className="ring"></div>
+        <span>Loading...</span>
+      </div>
+    );
   }
 
   if (error) {

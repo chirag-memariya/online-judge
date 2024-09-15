@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import '../../styles.css'; // Import the scoped CSS
+
 
 const Table = () => {
     const navigate = useNavigate();
@@ -88,7 +90,7 @@ const Table = () => {
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                                 <button
-                                    className={`px-4 py-2 text-white rounded-md ${getDifficultyButtonClasses(item.difficulty)} w-24 h-8`}
+                                    className={`difficulty px-4 py-2 text-white rounded-md ${getDifficultyButtonClasses(item.difficulty)} w-24 h-8`}
                                 >
                                     {item.difficulty}
                                 </button>

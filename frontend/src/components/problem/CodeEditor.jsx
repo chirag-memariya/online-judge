@@ -230,9 +230,6 @@ print(sum)
       <h1 className="text-3xl sm:text-4xl font-extrabold leading-normal tracking-tight text-gray-900 dark:text-white">
         Code Editor
       </h1>
-      <p className="text-lg font-regular uppercase mt-4 text-gray-700 dark:text-gray-300">
-        Problem ID: {problemId}
-      </p>
     </div>
 
     {/* Language Selector */}
