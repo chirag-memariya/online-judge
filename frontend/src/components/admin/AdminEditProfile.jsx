@@ -69,6 +69,15 @@ const AdminEditProfile = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="ring"></div>
+        <span>Loading...</span>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="flex-1 p-4 bg-white shadow rounded">
@@ -116,6 +125,7 @@ const AdminEditProfile = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                autoComplete="username"
               />
             </div>
 
@@ -142,7 +152,7 @@ const AdminEditProfile = () => {
                 className="w-full p-2 bg-white text-black rounded border border-gray-300"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                autocomplete="new-password"
+                autoComplete="new-password"
               />
             </div>
 
@@ -156,7 +166,7 @@ const AdminEditProfile = () => {
                 className="w-full p-2 bg-white text-black rounded border border-gray-300"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                autocomplete="new-password"
+                autoComplete="new-password"
               />
             </div>
 

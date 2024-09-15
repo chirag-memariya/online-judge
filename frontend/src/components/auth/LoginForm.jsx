@@ -27,7 +27,7 @@ const LoginForm = () => {
 
   return (
     <section className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center px-6 py-8">
-    <div className="flex flex-col items-center justify-center w-full max-w-md mx-auto">
+    <div className="flex flex-col items-center justify-center w-full max-w-md bg-white rounded-lg shadow dark:bg-gray-800 p-6">
       
       {/* Logo and Title */}
       <a href="#" className="flex items-center mb-8 text-3xl font-bold text-gray-900 dark:text-white">
@@ -66,6 +66,7 @@ const LoginForm = () => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                autoComplete="username"
               />
             </div>
             
@@ -86,7 +87,7 @@ const LoginForm = () => {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                autocomplete="current-password"
+                autoComplete="current-password"
               />
             </div>
             

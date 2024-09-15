@@ -43,48 +43,62 @@ const UserManagement = () => {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
+  
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="ring"></div>
+        <span>Loading...</span>
+      </div>
+    );
+  }
   if (error) return <p>{error}</p>;
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">User Management</h1>
-      <div className="relative overflow-x-auto shadow-md sm:rounded-lg bg-white dark:bg-gray-800 p-4">
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-              <th scope="col" className="px-6 py-3 text-lg font-semibold text-gray-900 dark:text-white text-left">User ID</th>
-              <th scope="col" className="px-6 py-3 text-lg font-semibold text-gray-900 dark:text-white text-left">Name</th>
-              <th scope="col" className="px-6 py-3 text-lg font-semibold text-gray-900 dark:text-white text-left">Email</th>
-              <th scope="col" className="px-6 py-3 text-lg font-semibold text-gray-900 dark:text-white text-left">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map(user => (
-              <tr key={user._id} className="bg-white dark:bg-gray-800 border-b dark:border-gray-700">
-                <td className="px-6 py-4">{user._id}</td>
-                <td className="px-6 py-4 font-medium text-gray-900 dark:text-white">{user.firstname} {user.lastname}</td>
-                <td className="px-6 py-4">{user.email}</td>
-                <td className="px-6 py-4 flex gap-2">
-                  <button
-                    onClick={() => handleEdit(user._id)}
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(user._id)}
-                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+<div className="relative overflow-x-auto shadow-md sm:rounded-lg bg-white dark:bg-gray-800 p-4">
+  <h2 className="text-center text-3xl font-semibold text-gray-900 dark:text-white mb-4">User Management</h2>
+  <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+      <tr>
+        <th scope="col" className="px-6 py-3 text-lg font-semibold text-gray-900 dark:text-white">User ID</th>
+        <th scope="col" className="px-6 py-3 text-lg font-semibold text-gray-900 dark:text-white">Name</th>
+        <th scope="col" className="px-6 py-3 text-lg font-semibold text-gray-900 dark:text-white">Email</th>
+        <th scope="col" className="px-6 py-3 text-lg font-semibold text-gray-900 dark:text-white">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {users.map((user, index) => (
+        <tr
+          key={user._id}
+          className={`transition duration-200 ease-in-out transform hover:translate-x-4 ${
+            index % 2 === 0 ? 'bg-white dark:bg-gray-800' : 'bg-gray-50 dark:bg-gray-700'
+          } border-b dark:border-gray-700`}
+        >
+          <td className="px-6 py-4 text-gray-900 dark:text-white">{user._id}</td>
+          <td className="px-6 py-4 font-medium text-gray-900 dark:text-white">
+            {user.firstname} {user.lastname}
+          </td>
+          <td className="px-6 py-4 text-gray-900 dark:text-white">{user.email}</td>
+          <td className="px-6 py-4 flex gap-2">
+            <button
+              onClick={() => handleEdit(user._id)}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Edit
+            </button>
+            <button
+              onClick={() => handleDelete(user._id)}
+              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
   );
 };
 

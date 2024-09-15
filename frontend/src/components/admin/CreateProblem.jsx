@@ -53,6 +53,16 @@ const CreateProblem = () => {
     }
   };
 
+  
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="ring"></div>
+        <span>Loading...</span>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="flex-1 p-4 bg-white shadow rounded">

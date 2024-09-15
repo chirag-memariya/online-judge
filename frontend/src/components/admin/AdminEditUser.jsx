@@ -73,6 +73,17 @@ const AdminEditUser = () => {
     }
   };
 
+  
+
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="ring"></div>
+        <span>Loading...</span>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="flex-1 p-4 bg-white shadow rounded">
@@ -120,6 +131,7 @@ const AdminEditUser = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                autoComplete="username"
               />
             </div>
 
@@ -163,7 +175,7 @@ const AdminEditUser = () => {
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                autocomplete="new-password"
+                autoComplete="new-password"
               />
             </div>
             <div>
@@ -177,7 +189,7 @@ const AdminEditUser = () => {
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                autocomplete="new-password"
+                autoComplete="new-password"
               />
             </div>
 
