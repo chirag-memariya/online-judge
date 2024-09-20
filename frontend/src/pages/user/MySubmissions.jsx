@@ -8,6 +8,7 @@ const MySubmissions = () => {
   const navigate = useNavigate();
   const problemId = location.state?.problemId;
   const {userId} = useAuth();
+  const {isAdmin} =useAuth();
   const [submissions, setSubmissions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -32,9 +33,12 @@ const MySubmissions = () => {
   }, [userId, problemId]);
 
   const handleHomeClick = () => {
-    navigate('/');
+    if(isAdmin){
+      navigate('/admin-dashboard')
+    }else{
+      navigate('/');
+    }
   };
-
 // Function to open the modal with the selected submission's details
 const openModal = (submission) => {
     setSelectedSubmission(submission);

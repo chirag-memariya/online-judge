@@ -7,6 +7,7 @@ const UserSubmissions = () => {
   const [submissions, setSubmissions] = useState([]);
   // const [userId,setUserId] = useState('66df3769911f976301fb4677');
   const {userId} = useAuth();
+  const {isAdmin} = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -58,8 +59,13 @@ if (loading) {
   if (submissions.length === 0) {
     return <div>No submissions found for this user.</div>;
   }
+  
   const handleHomeClick = () => {
-    navigate('/');
+    if(isAdmin){
+      navigate('/admin-dashboard')
+    }else{
+      navigate('/');
+    }
   };
 
 

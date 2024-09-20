@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 const ProblemSubmissions = () => {
   const location = useLocation();
@@ -9,6 +10,7 @@ const ProblemSubmissions = () => {
   const [submissions, setSubmissions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const {isAdmin} = useAuth();
 
   // Fetch submissions for the specific problem when the component mounts
   useEffect(() => {
@@ -44,7 +46,11 @@ const ProblemSubmissions = () => {
     return <div>No submissions found for this problem.</div>;
   }
   const handleHomeClick = () => {
-    navigate('/');
+    if(isAdmin){
+      navigate('/admin-dashboard')
+    }else{
+      navigate('/');
+    }
   };
 
 
