@@ -12,7 +12,6 @@ const navigation = [
   { name: 'Dashboard', href: '/', current: true },
   { name: 'Leaderboard', href: '/leaderboard', current: false },
   { name: 'Submissions', href: '/submissionlist', current: false },
-  { name: 'Events', href: '#', current: false },
 ].map((item) => ({
   ...item,
   current: location.pathname === item.href,
@@ -92,11 +91,6 @@ export default function Navbar() {
                                             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                         >
                                             Your Profile
-                                        </a>
-                                    </MenuItem>
-                                    <MenuItem>
-                                        <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                            Settings
                                         </a>
                                     </MenuItem>
                                     <MenuItem>

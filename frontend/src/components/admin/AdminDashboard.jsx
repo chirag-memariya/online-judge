@@ -5,8 +5,6 @@ import Footer from '../common/Footer';
 import { useAuth } from '../../context/AuthContext';
 
 const AdminDashboard = () => {
-    // const {isAdmin, isAuthenticated} = useAuth();
-    // console.log("isAdmin: "+isAdmin+" isAuthenticated: "+isAuthenticated);  
     return (
         <>
             <AdminNavbar />
