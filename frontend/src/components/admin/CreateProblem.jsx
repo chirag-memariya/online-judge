@@ -45,11 +45,11 @@ const CreateProblem = () => {
       }
       setSuccess(data.message);
       setLoading(false);
-      navigate('/admin/problems');
+      navigate('/admin-dashboard/problem-list'); // Navigate to home or another page on success
     } catch (err) {
       console.error('Error creating problem:', err);
       setError('Problem creation failed. Please try again.');
-      // navigate('/');
+      setLoading(false);
     }
   };
 

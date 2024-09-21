@@ -34,7 +34,7 @@ const AddAdminUser = () => {
             await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/admin/add-admin`,
                 {firstname, lastname, email, password,date_of_birth:dob})
                 setSuccess('Admin added successfully!');
-                navigate('/admin/usermanagement');
+                navigate('/admin-dashboard');
         } catch (err) {
             setError('Failed to add admin: ' + err.message);
             console.error('Error updating user:', err);

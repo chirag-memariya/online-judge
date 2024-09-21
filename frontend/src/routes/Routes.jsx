@@ -53,6 +53,7 @@ const AppRoutes = () => {
 
         {/* User Authenticated Routes */}
         <Route path="/" element={<Dashboard />}>
+        {/* <Route index element={isAdmin ? <Navigate to="/admin-dashboard" /> : <ProblemList />} /> */}
           <Route index element={<ProblemList />} />
           <Route path="leaderboard" element={<Leaderboard />} />
           <Route path="submissionlist" element={<SubmissionList />} />

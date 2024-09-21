@@ -39,7 +39,7 @@ export default function Navbar() {
 
 
   return (
-<Disclosure as="nav" className="bg-gray-800 shadow-lg sticky top-0 z-50">
+<Disclosure as="nav" className="bg-gray-800 shadow-lg sticky top-0 z-50 mb-1">
             <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
                 <div className="relative flex h-16 items-center justify-between">
                     <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -120,7 +120,7 @@ export default function Navbar() {
                     </div>
                 </div>
             </div>
-            <Disclosure.Panel className="sm:hidden">
+            <DisclosurePanel className="sm:hidden">
                 <div className="space-y-1 px-2 pb-3 pt-2">
                     {navigation.map((item) => (
                         <DisclosureButton
@@ -134,7 +134,7 @@ export default function Navbar() {
                         </DisclosureButton>
                     ))}
                 </div>
-            </Disclosure.Panel>
+            </DisclosurePanel>
         </Disclosure>
   );
 }

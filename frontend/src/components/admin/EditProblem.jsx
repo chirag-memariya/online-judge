@@ -74,7 +74,7 @@ const EditProblem = () => {
 
       setSuccess(data.message);
       setLoading(false);
-      navigate('/admin/problems'); // Navigate to home or another page on success
+      navigate('/admin-dashboard/problem-list'); // Navigate to home or another page on success
     } catch (err) {
       console.error('Error updating problem:', err);
       setError('Problem update failed. Please try again.');

@@ -19,63 +19,60 @@ const CodeEditor = ({ problemId }) => {
         cpp: `
     #include <iostream>
     using namespace std;
-
+    
     int main() {
-        int n1, n2, sum;
-        cin >> n1 >> n2;
-        sum = n1 + n2;
-        cout << sum;
+        // Declare variables
+        // Add your logic here
+    
         return 0;
     }
         `,
+    
         java: `
     import java.util.Scanner;
-
+    
     public class Main {
         public static void main(String[] args) {
             Scanner sc = new Scanner(System.in);
-            int n1 = sc.nextInt();
-            int n2 = sc.nextInt();
-            int sum = n1 + n2;
-            System.out.println(sum);
+            // Declare variables
+            // Add your logic here
         }
     }
         `,
+    
         py: `
-# Read the input line and split it into two parts
-n1, n2 = map(int, input().split())
-
-# Calculate the sum
-sum = n1 + n2
-
-# Print the sum
-print(sum)
-
+    # Read input here
+    # Add your logic here
+    
+    if __name__ == "__main__":
+        # Example function call or logic
+        pass
         `,
+    
         go: `
     package main
     import "fmt"
-
+    
     func main() {
-        var n1, n2 int
-        fmt.Scanf("%d %d", &n1, &n2)
-        fmt.Printf("%d", n1+n2)
+        // Declare variables
+        // Add your logic here
     }
         `,
+    
         js: `
     const readline = require('readline');
     const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout
     });
-
+    
     rl.question('', (answer) => {
-        const [n1, n2] = answer.split(' ').map(Number);
-        console.log(n1 + n2);
+        // Process input and logic here
         rl.close();
     });
         `
     };
+    
 
     useEffect(() => {
         setCode(codeTemplates[language]);
