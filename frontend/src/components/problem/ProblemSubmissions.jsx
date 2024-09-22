@@ -76,9 +76,6 @@ const ProblemSubmissions = () => {
         <th scope="col" className="px-6 py-3 text-lg font-semibold text-gray-900 dark:text-white">
           Verdict
         </th>
-        <th scope="col" className="px-6 py-3 text-lg font-semibold text-gray-900 dark:text-white">
-          Execution Time
-        </th>
       </tr>
     </thead>
     <tbody>

@@ -89,9 +89,6 @@ const openModal = (submission) => {
           Verdict
         </th>
         <th scope="col" className="px-6 py-3 text-lg font-semibold text-gray-900 dark:text-white">
-          Execution Time
-        </th>
-        <th scope="col" className="px-6 py-3 text-lg font-semibold text-gray-900 dark:text-white">
           Date Submitted
         </th>
         <th scope="col" className="px-6 py-3 text-lg font-semibold text-gray-900 dark:text-white">
@@ -152,7 +149,6 @@ const openModal = (submission) => {
             &times;
           </button>
         </div>
-        <p className="mb-4">Execution Time: {selectedSubmission.execution_time} ms</p>
         <div className="overflow-y-auto h-64">
           <pre className="bg-gray-100 p-4 rounded-md">
             <code className="text-sm">

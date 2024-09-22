@@ -48,7 +48,6 @@ const SubmissionList = () => {
             <th scope="col" className="px-6 py-3 text-lg font-semibold text-gray-900 dark:text-white">User</th>
             <th scope="col" className="px-6 py-3 text-lg font-semibold text-gray-900 dark:text-white">Problem</th>
             <th scope="col" className="px-6 py-3 text-lg font-semibold text-gray-900 dark:text-white">Verdict</th>
-            <th scope="col" className="px-6 py-3 text-lg font-semibold text-gray-900 dark:text-white">Execution Time</th>
             <th scope="col" className="px-6 py-3 text-lg font-semibold text-gray-900 dark:text-white">Date Submitted</th>
           </tr>
         </thead>
