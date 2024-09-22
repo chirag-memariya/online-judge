@@ -79,9 +79,6 @@ const SubmissionList = () => {
                 </span>
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-gray-900 dark:text-white">
-                {submission.execution_time} ms
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-gray-900 dark:text-white">
                 {new Date(submission.submitted_at).toLocaleString()}
               </td>
             </tr>
