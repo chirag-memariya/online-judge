@@ -38,13 +38,6 @@ const ProblemSubmissions = () => {
     );
   }
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
-  if (submissions.length === 0) {
-    return <div>No submissions found for this problem.</div>;
-  }
   const handleHomeClick = () => {
     if(isAdmin){
       navigate('/admin-dashboard')
@@ -79,7 +72,8 @@ const ProblemSubmissions = () => {
       </tr>
     </thead>
     <tbody>
-      {submissions.map((submission, index) => (
+      {submissions.length > 0 ? 
+        (submissions.map((submission, index) => (
         <tr
           key={submission._id}
           className={`transition duration-200 ease-in-out transform hover:translate-x-4 ${
@@ -103,7 +97,17 @@ const ProblemSubmissions = () => {
             </span>
           </td>
         </tr>
-      ))}
+      ))) : (
+            <tr>
+              <td
+                className="px-6 py-4 whitespace-nowrap text-gray-500 dark:text-gray-400 text-center"
+                colSpan="3"
+              >
+                No submissions available.
+              </td>
+            </tr>
+          )
+      }
     </tbody>
   </table>
 </div>
