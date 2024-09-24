@@ -16,7 +16,7 @@ app.use(cookieParser());
 app.use(
     cors({
         
-        origin: CLIENT_URL, // 'https://www.chigs.site'
+        origin: process.env.CLIENT_URL,
         credentials: true,
     })
 );

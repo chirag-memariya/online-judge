@@ -74,13 +74,12 @@ web_modules/
 
 # dotenv environment variable files
 .env
-# .env.development.local
-# .env.test.local
-# .env.production.local
-# .env.local
-.env.prod
+.env.development
+.env.production
+.env.test.local
+.env.local
 .env.dev
-
+.env.prod
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 .parcel-cache
@@ -146,6 +145,12 @@ index-backup.js
 #keys
 keys/
 
+#outputs and code
+outputs/
+codes/
+inputs/
+
+
 react-dom.md
 Route.backup.txt
 nginx-server.txt
@@ -155,3 +160,4 @@ codeeditor.backup.txt
 index-backup.js.txt
 palindrome.md
 Script.txt
+docker-build.md
