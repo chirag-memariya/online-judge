@@ -7,7 +7,7 @@ import profileLogo from '../../assets/person-male--v2.png';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function AdminNavbar() {
-  const { logout } = useAuth();
+  const { logout, userName } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const handleProfileNavigation = () => navigate(`/admin/profile`);
@@ -92,7 +92,7 @@ export default function AdminNavbar() {
                     onClick={handleProfileNavigation}
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
-                    Your Profile
+                    Hi, {userName | 'User'}!
                   </a>
                 </MenuItem>
                 <MenuItem>

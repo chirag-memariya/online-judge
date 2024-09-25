@@ -6,7 +6,7 @@ import profileLogo from '../../assets/person-male--v2.png';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function Navbar() {
-    const { isAuthenticated, logout } = useAuth();
+    const { isAuthenticated, logout, userName } = useAuth();
     const navigate = useNavigate();
     const location = useLocation(); 
     const handleProfileNavigation = () => navigate(`/user/profile`);
@@ -88,7 +88,7 @@ export default function Navbar() {
                                             onClick={handleProfileNavigation}
                                             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                         >
-                                            Your Profile
+                                            Hi, {userName || 'User'}!
                                         </a>
                                     </MenuItem>
                                     <MenuItem>

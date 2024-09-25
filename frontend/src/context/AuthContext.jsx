@@ -14,6 +14,7 @@ export const AuthProvider = ({ children }) => {
     });
     const [user, setUser] = useState(null);
     const [userId, setUserId] = useState(() => localStorage.getItem('userId'));
+    const [userName, setUserName] = useState(() => localStorage.getItem('userName'));
     const [isAdmin, setIsAdmin] = useState(() => localStorage.getItem('isAdmin'));
     
     // Initialize from localStorage
@@ -22,6 +23,7 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         // Load user data from localStorage when the component mounts
         const storedUserId = localStorage.getItem('userId');
+        const storedUserName = localStorage.getItem('userName');
         const storedIsAdmin = localStorage.getItem('isAdmin');
         const storedAuthToken = localStorage.getItem('authToken');
         if (storedUserId) {
@@ -32,6 +34,9 @@ export const AuthProvider = ({ children }) => {
         }
         if (storedIsAdmin) {
             setIsAdmin(true);
+        }
+        if(storedUserName){
+            setUserName(storedUserName);
         }
     }, []);
 
@@ -88,10 +93,12 @@ export const AuthProvider = ({ children }) => {
             // Store token in localStorage
             localStorage.setItem('authToken', data.token);
             localStorage.setItem('userId', data.user._id);
+            localStorage.setItem('userName', data.user.firstname+" "+data.user.lastname);
             localStorage.setItem('isAdmin',isAdminHepler(data.user._id));
             setAuthData({ token: data.token });
             setUser({ ...data.user, id: data.user._id });
             setUserId(data.user._id);
+            setUserName(data.user.firstname+" "+data.user.lastname);
             setIsAdmin(data.user.role === "admin"); // Set isAdmin after login
         } catch (error) {
             console.error('Login error:', error);
@@ -121,10 +128,12 @@ export const AuthProvider = ({ children }) => {
             // Store token in localStorage
             localStorage.setItem('authToken', data.token);
             localStorage.setItem('userId', data.user._id);
+            localStorage.setItem('userName', data.user.firstname+" "+data.user.lastname);
             localStorage.setItem('isAdmin',isAdminHepler(data.user._id));
             setAuthData({ token: data.token });
             setUser({ ...data.user, id: data.user._id });
             setUserId(data.user._id);
+            setUserName(data.user.firstname+" "+data.user.lastname);
             setIsAdmin(data.user.role === "admin"); // Set isAdmin after registration
         } catch (error) {
             console.error('Registration error:', error);
@@ -155,8 +164,9 @@ export const AuthProvider = ({ children }) => {
             // Update user data in the state
             setUser({ ...data.user, id: data.user._id });
             localStorage.setItem('userId', data.user._id);
+            localStorage.setItem('userName', data.user.firstname+" "+data.user.lastname);
             setUserId(data.user._id);
-            // setIsAdmin(data.user.role === "admin"); // Update isAdmin if the role is changed
+            setUserName(data.user.firstname+" "+data.user.lastname);
         } catch (error) {
             console.error('Error updating user:', error);
             throw error;
@@ -185,11 +195,13 @@ export const AuthProvider = ({ children }) => {
             // Remove token and user ID from localStorage on successful deletion
             localStorage.removeItem('authToken');
             localStorage.removeItem('userId');
+            localStorage.removeItem('userName');
             localStorage.removeItem('isAdmin');
 
             setAuthData(null);
             setUser(null);
             setUserId(null); // Clear userId state
+            setUserName(null);
             setIsAdmin(false); // Clear isAdmin state
 
             alert('User deleted successfully.');
@@ -213,10 +225,12 @@ export const AuthProvider = ({ children }) => {
             // Remove token from localStorage
             localStorage.removeItem('authToken');
             localStorage.removeItem('userId');
+            localStorage.removeItem('userName');
             localStorage.removeItem('isAdmin');
             setAuthData(null);
             setUser(null);
             setUserId(null); // Clear userId state
+            setUserName(null); 
             setIsAdmin(false); // Clear isAdmin state
         } catch (error) {
             console.error('Failed to logout', error);
@@ -227,7 +241,8 @@ export const AuthProvider = ({ children }) => {
 
     const value = {
         user,
-        userId,
+        userId, 
+        userName,
         isAdmin,
         login,
         register,
