@@ -2,7 +2,6 @@ import React from 'react';
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useAuth } from '../../context/AuthContext';
-import markLogo from '../../assets/home_icon.svg';
 import profileLogo from '../../assets/person-male--v2.png';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -10,7 +9,9 @@ export default function AdminNavbar() {
   const { logout, userName } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  const handleProfileNavigation = () => navigate(`/admin/profile`);
+  const handleProfileNavigation = () => navigate(`/admin-dashboard`);
+
+  console.log(userName);
   
   const navLinkClasses = (current) =>
     `rounded-md px-3 py-2 text-sm font-medium ${current
@@ -26,7 +27,7 @@ export default function AdminNavbar() {
     { name: 'User Management', href: '/admin-dashboard/user-management', current: false },
   ].map((item) => ({
     ...item,
-    current: location.pathname == item.href,
+    current: location.pathname === item.href,
   }));
 
 
@@ -92,7 +93,7 @@ export default function AdminNavbar() {
                     onClick={handleProfileNavigation}
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
-                    Hi, {userName | 'User'}!
+                    Hi, {userName || 'User'}!
                   </a>
                 </MenuItem>
                 <MenuItem>
