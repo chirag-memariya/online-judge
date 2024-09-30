@@ -27,7 +27,7 @@ const CodeEditor = ({ problemId }) => {
         return 0;
     }
         `,
-    
+
         java: `
     import java.util.Scanner;
     
@@ -39,7 +39,7 @@ const CodeEditor = ({ problemId }) => {
         }
     }
         `,
-    
+
         py: `
     # Read input here
     # Add your logic here
@@ -48,7 +48,7 @@ const CodeEditor = ({ problemId }) => {
         # Example function call or logic
         pass
         `,
-    
+
         go: `
     package main
     import "fmt"
@@ -58,7 +58,7 @@ const CodeEditor = ({ problemId }) => {
         // Add your logic here
     }
         `,
-    
+
         js: `
     const readline = require('readline');
     const rl = readline.createInterface({
@@ -72,7 +72,7 @@ const CodeEditor = ({ problemId }) => {
     });
         `
     };
-    
+
 
     useEffect(() => {
         setCode(codeTemplates[language]);
@@ -197,11 +197,12 @@ const CodeEditor = ({ problemId }) => {
                         onChange={(e) => setLanguage(e.target.value)}
                         className="p-2 w-1/2 border border-gray-300 dark:border-gray-600 rounded-lg mr-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
                     >
-                        <option value="cpp">C++</option>
-                        <option value="java">Java</option>
-                        <option value="py">Python</option>
-                        <option value="go">Golang</option>
-                        <option value="js">JavaScript</option>
+                        <option value="cpp">C++ (C++17/C++20)</option>
+                        <option value="java">Java (OpenJDK 21)</option>
+                        <option value="py">Python (3.12.3)</option>
+                        <option value="go">Golang (1.22.7)</option>
+                        <option value="js">JavaScript (Node.js 18.20.4)</option>
+
                     </select>
                     <button
                         onClick={toggleFullScreen}
@@ -211,29 +212,29 @@ const CodeEditor = ({ problemId }) => {
                     </button>
                 </div>
 
-        {/* color: '#cce7ff', // Change this color as needed */}
+                {/* color: '#cce7ff', // Change this color as needed */}
 
-        <textarea
-    rows={isFullScreen ? "auto" : "14"}
-    className={`block p-3 w-full text-sm bg-gray-50 rounded-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600 ${isFullScreen ? 'h-full' : ''}`}
-    style={{
-        resize: 'none',
-        overflow: 'auto',
-        fontFamily: 'monospace',
-        lineHeight: '1.5',
-        padding: '10px',
-        borderRadius: '4px',
-        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-        color: '#d1d5db', // Example color for dark mode
-        outline: 'none', // Remove default focus outline
-    }}
-    value={code}
-    onChange={(e) => setCode(e.target.value)}
-    placeholder="Write code here..."
-    spellCheck={false} // Disable spell-check and grammar correction
-    onFocus={(e) => e.target.style.boxShadow = '0 0 0 2px rgba(66, 153, 225, 0.5)'} // Add shadow on focus
-    onBlur={(e) => e.target.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)'} // Reset shadow when focus is lost
-/>
+                <textarea
+                    rows={isFullScreen ? "auto" : "14"}
+                    className={`block p-3 w-full text-sm bg-gray-50 rounded-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600 ${isFullScreen ? 'h-full' : ''}`}
+                    style={{
+                        resize: 'none',
+                        overflow: 'auto',
+                        fontFamily: 'monospace',
+                        lineHeight: '1.5',
+                        padding: '10px',
+                        borderRadius: '4px',
+                        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                        color: '#d1d5db', // Example color for dark mode
+                        outline: 'none', // Remove default focus outline
+                    }}
+                    value={code}
+                    onChange={(e) => setCode(e.target.value)}
+                    placeholder="Write code here..."
+                    spellCheck={false} // Disable spell-check and grammar correction
+                    onFocus={(e) => e.target.style.boxShadow = '0 0 0 2px rgba(66, 153, 225, 0.5)'} // Add shadow on focus
+                    onBlur={(e) => e.target.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)'} // Reset shadow when focus is lost
+                />
             </div>
 
             {/* Navbar for Input, Output, Verdict */}
@@ -262,82 +263,82 @@ const CodeEditor = ({ problemId }) => {
 
             {/* Dynamic Content Based on Active Tab */}
             {activeTab === 'input' && (
-    <div className="mb-6">
-        <textarea
-            rows="2"
-            className="block p-3 w-full text-sm bg-gray-50 rounded-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600"
-            style={{
-                resize: 'none',
-                overflow: 'auto',
-                fontFamily: 'monospace',
-                lineHeight: '1.5',
-                padding: '10px',
-                borderRadius: '4px',
-                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-                color: '#d1d5db', // Example color for dark mode
-                outline: 'none', // Remove default focus outline
-            }}
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Provide input here..."
-            spellCheck={false} // Disable spell-check and grammar correction
-            onFocus={(e) => e.target.style.boxShadow = '0 0 0 2px rgba(66, 153, 225, 0.5)'} // Add shadow on focus
-            onBlur={(e) => e.target.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)'} // Reset shadow when focus is lost
-        />
-    </div>
-)}
+                <div className="mb-6">
+                    <textarea
+                        rows="2"
+                        className="block p-3 w-full text-sm bg-gray-50 rounded-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600"
+                        style={{
+                            resize: 'none',
+                            overflow: 'auto',
+                            fontFamily: 'monospace',
+                            lineHeight: '1.5',
+                            padding: '10px',
+                            borderRadius: '4px',
+                            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                            color: '#d1d5db', // Example color for dark mode
+                            outline: 'none', // Remove default focus outline
+                        }}
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                        placeholder="Provide input here..."
+                        spellCheck={false} // Disable spell-check and grammar correction
+                        onFocus={(e) => e.target.style.boxShadow = '0 0 0 2px rgba(66, 153, 225, 0.5)'} // Add shadow on focus
+                        onBlur={(e) => e.target.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)'} // Reset shadow when focus is lost
+                    />
+                </div>
+            )}
 
-{activeTab === 'output' && (
-    <div className="mb-6">
-        <textarea
-            rows="3"
-            readOnly
-            className="block p-3 w-full text-sm bg-gray-50 rounded-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600"
-            style={{
-                resize: 'none',
-                overflow: 'auto',
-                fontFamily: 'monospace',
-                lineHeight: '1.5',
-                padding: '10px',
-                borderRadius: '4px',
-                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-                color: '#d1d5db', // Example color for dark mode
-                outline: 'none', // Remove default focus outline
-            }}
-            value={output}
-            placeholder="Output will appear here..."
-            spellCheck={false} // Disable spell-check and grammar correction
-            onFocus={(e) => e.target.style.boxShadow = '0 0 0 2px rgba(66, 153, 225, 0.5)'} // Add shadow on focus
-            onBlur={(e) => e.target.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)'} // Reset shadow when focus is lost
-        />
-    </div>
-)}
+            {activeTab === 'output' && (
+                <div className="mb-6">
+                    <textarea
+                        rows="3"
+                        readOnly
+                        className="block p-3 w-full text-sm bg-gray-50 rounded-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600"
+                        style={{
+                            resize: 'none',
+                            overflow: 'auto',
+                            fontFamily: 'monospace',
+                            lineHeight: '1.5',
+                            padding: '10px',
+                            borderRadius: '4px',
+                            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                            color: '#d1d5db', // Example color for dark mode
+                            outline: 'none', // Remove default focus outline
+                        }}
+                        value={output}
+                        placeholder="Output will appear here..."
+                        spellCheck={false} // Disable spell-check and grammar correction
+                        onFocus={(e) => e.target.style.boxShadow = '0 0 0 2px rgba(66, 153, 225, 0.5)'} // Add shadow on focus
+                        onBlur={(e) => e.target.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)'} // Reset shadow when focus is lost
+                    />
+                </div>
+            )}
 
-{activeTab === 'verdict' && (
-    <div className="mb-6">
-        <textarea
-            rows="3"
-            readOnly
-            className="block p-3 w-full text-sm bg-gray-50 rounded-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600"
-            style={{
-                resize: 'none',
-                overflow: 'auto',
-                fontFamily: 'monospace',
-                lineHeight: '1.5',
-                padding: '10px',
-                borderRadius: '4px',
-                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-                color: '#d1d5db', // Example color for dark mode
-                outline: 'none', // Remove default focus outline
-            }}
-            value={verdict}
-            placeholder="Verdict will appear here..."
-            spellCheck={false} // Disable spell-check and grammar correction
-            onFocus={(e) => e.target.style.boxShadow = '0 0 0 2px rgba(66, 153, 225, 0.5)'} // Add shadow on focus
-            onBlur={(e) => e.target.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)'} // Reset shadow when focus is lost
-        />
-    </div>
-)}
+            {activeTab === 'verdict' && (
+                <div className="mb-6">
+                    <textarea
+                        rows="3"
+                        readOnly
+                        className="block p-3 w-full text-sm bg-gray-50 rounded-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600"
+                        style={{
+                            resize: 'none',
+                            overflow: 'auto',
+                            fontFamily: 'monospace',
+                            lineHeight: '1.5',
+                            padding: '10px',
+                            borderRadius: '4px',
+                            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                            color: '#d1d5db', // Example color for dark mode
+                            outline: 'none', // Remove default focus outline
+                        }}
+                        value={verdict}
+                        placeholder="Verdict will appear here..."
+                        spellCheck={false} // Disable spell-check and grammar correction
+                        onFocus={(e) => e.target.style.boxShadow = '0 0 0 2px rgba(66, 153, 225, 0.5)'} // Add shadow on focus
+                        onBlur={(e) => e.target.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)'} // Reset shadow when focus is lost
+                    />
+                </div>
+            )}
 
 
             {/* Run and Submit Buttons */}

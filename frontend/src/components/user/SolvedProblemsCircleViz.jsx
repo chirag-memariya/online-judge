@@ -8,7 +8,6 @@ const SolvedProblemsCircleViz = ({ userId }) => {
     hard: 0
   });
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchSolvedProblems = async () => {
@@ -18,7 +17,6 @@ const SolvedProblemsCircleViz = ({ userId }) => {
         setSolvedProblemsByDifficulty(response.data);
       } catch (error) {
         console.error("Error while fetching # of problems:", error);
-        setError("Failed to fetch solved problems. Please try again later.");
       } finally {
         setIsLoading(false);
       }
