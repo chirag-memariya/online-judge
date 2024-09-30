@@ -2,10 +2,16 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import SolvedProblemsCircleViz from './SolvedProblemsCircleViz';
 
 const UserProfile = () => {
   const {userId, deleteUser} = useAuth();
   const [user, setUser] = useState(null);
+  const [solvedProblemsByDifficulty,setSolvedProblemsByDifficulty]=useState({
+    easy: 0,
+    medium: 0,
+    hard: 0
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -25,6 +31,18 @@ const UserProfile = () => {
 
     fetchUserData();
   }, [userId]);
+
+  useEffect(()=>{
+    const fetchNumberOfProblems = async() =>{
+      try {
+        const solvedProblems = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/submissions/solved-count/${userId}`);
+        setSolvedProblemsByDifficulty(solvedProblems.data);
+      } catch (error) {
+        console.error("Error while fetching # of problems .",error);
+      }
+    };
+    fetchNumberOfProblems();
+  },[userId]);
 
   const handleDeleteUser = async () => {
     if (!window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
@@ -103,13 +121,21 @@ const UserProfile = () => {
 
       {/* Additional sections like Activity or Achievements */}
       <div className="mt-8">
-        <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Total Solved Problems</h3>
-        {/* Replace with actual activity data */}
-        <ul className="list-disc ml-5 text-gray-900 dark:text-white">
-          <li>1</li>
-          <li>2</li>
-          <li>3</li>
-        </ul>
+
+      <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Total Solved Problems</h3>
+      <div className="grid grid-cols-3 gap-4">
+        {Object.entries(solvedProblemsByDifficulty).map(([difficulty, count]) => (
+          <div key={difficulty} className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+            <h4 className="text-md font-medium text-gray-700 dark:text-gray-300 capitalize">{difficulty}</h4>
+            <p className="text-2xl font-bold text-gray-900 dark:text-white">{count}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="shadow">
+      <SolvedProblemsCircleViz userId={userId} />
+    </div>
+
       </div>
     </div>
   ) : (

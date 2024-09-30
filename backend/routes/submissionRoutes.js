@@ -37,13 +37,13 @@ router.post('/create', async (req, res) => {
 
         if (!previousSubmission && verdict === 'Accepted') {
             console.log("No previous accepted submission found. Proceeding with score update.");
-            
+
             // Fetch problem data to calculate score increment
             const problemData = await Problem.findById(problem).session(session);
             if (!problemData) {
                 throw new Error('Problem not found.');
             }
-            
+
             const difficultyPoints = {
                 easy: 2,
                 medium: 4,
@@ -189,6 +189,71 @@ router.get('/user/:userId/problem/:problemId', async (req, res) => {
         res.status(500).send("Fetching submissions failed. Please try again.");
     }
 });
+
+router.get('/solved-count/:userId', async (req, res) => {
+    try {
+        const userId = req.params.userId;
+
+        // Convert userId string to ObjectId
+        const userObjectId = new mongoose.Types.ObjectId(userId);
+
+        const solvedProblemsByDifficulty = await Submission.aggregate([
+            // Match submissions for the specific user with 'Accepted' verdict
+            {
+                $match: {
+                    user: userObjectId,
+                    verdict: 'Accepted'
+                }
+            },
+            // Lookup to join with the Problem collection
+            {
+                $lookup: {
+                    from: 'problems', // The name of your Problem collection in MongoDB
+                    localField: 'problem',
+                    foreignField: '_id',
+                    as: 'problemDetails'
+                }
+            },
+            // Unwind the problemDetails array
+            { $unwind: '$problemDetails' },
+            // Group by difficulty and count unique problems
+            {
+                $group: {
+                    _id: '$problemDetails.difficulty',
+                    count: { $addToSet: '$problem' }
+                }
+            },
+            // Project to get the count of unique problems
+            {
+                $project: {
+                    difficulty: '$_id',
+                    count: { $size: '$count' }
+                }
+            },
+            // Sort by difficulty
+            { $sort: { difficulty: 1 } }
+        ]);
+
+        // Transform the result into a more readable format
+        const result = solvedProblemsByDifficulty.reduce((acc, item) => {
+            acc[item.difficulty] = item.count;
+            return acc;
+        }, {});
+
+        // Add missing difficulties with count 0
+        ['easy', 'medium', 'hard'].forEach(difficulty => {
+            if (!result[difficulty]) {
+                result[difficulty] = 0;
+            }
+        });
+
+        res.status(200).json(result);
+    } catch (error) {
+        console.error("Error: fetching solved problems count failed! " + error);
+        res.status(500).send("Fetching solved problems count failed. Please try again.");
+    }
+});
+
 
 
 router.put('/edit/:id', async (req, res) => {
