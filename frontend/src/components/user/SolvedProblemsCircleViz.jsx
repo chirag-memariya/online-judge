@@ -29,10 +29,6 @@ const SolvedProblemsCircleViz = ({ userId }) => {
     return <div className="text-center">Loading...</div>;
   }
 
-  if (error) {
-    return <div className="text-center text-red-500">{error}</div>;
-  }
-
   const total = Object.values(solvedProblemsByDifficulty).reduce((a, b) => a + b, 0);
   const colorMap = { easy: '#4CAF50', medium: '#FFC107', hard: '#F44336' };
 

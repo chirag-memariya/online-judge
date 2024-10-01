@@ -205,11 +205,25 @@ const CodeEditor = ({ problemId }) => {
 
                     </select>
                     <button
-                        onClick={toggleFullScreen}
-                        className="p-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
-                    >
-                        {isFullScreen ? 'Exit Full Screen' : 'Full Screen'}
-                    </button>
+    onClick={toggleFullScreen}
+    className="p-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600 transition-all duration-200 flex items-center space-x-2"
+>
+    {isFullScreen ? (
+        <>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M4 14h6m0 0v6m0-6L3 21M20 10h-6m0 0V4m0 6l7-7"/>
+            </svg>
+            <span className="text-sm">Exit</span>
+        </>
+    ) : (
+        <>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+            </svg>
+            <span className="text-sm">Fullscreen</span>
+        </>
+    )}
+</button>
                 </div>
 
                 {/* color: '#cce7ff', // Change this color as needed */}
@@ -343,22 +357,30 @@ const CodeEditor = ({ problemId }) => {
 
             {/* Run and Submit Buttons */}
             <div className="flex gap-4 mt-6">
-                <button
-                    onClick={handleRun}
-                    className="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-gray-900 rounded-lg bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800"
-                >
-                    <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                        Run
-                    </span>
-                </button>
-                <button
-                    onClick={handleSubmit}
-                    className="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-gray-900 rounded-lg bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800"
-                >
-                    <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                        Submit
-                    </span>
-                </button>
+            <button
+    onClick={handleRun}
+    className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-blue-500 to-indigo-600 text-white focus:ring-4 focus:outline-none focus:ring-blue-300 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 active:translate-y-0 active:shadow-md"
+>
+    <span className="relative px-5 py-2.5 flex items-center transition-all ease-in duration-200 group-hover:bg-opacity-0">
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 transition-transform duration-200 group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polygon points="5 3 19 12 5 21 5 3" />
+        </svg>
+        Run
+    </span>
+</button>
+
+<button
+    onClick={handleSubmit}
+    className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-blue-500 to-indigo-600 text-white focus:ring-4 focus:outline-none focus:ring-blue-300 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 active:translate-y-0 active:shadow-md"
+>
+    <span className="relative px-5 py-2.5 flex items-center transition-all ease-in duration-200 group-hover:bg-opacity-0">
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 transition-transform duration-200 group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13" />
+            <polygon points="22 2 15 22 11 13 2 9 22 2" />
+        </svg>
+        Submit
+    </span>
+</button>
             </div>
         </div>
     )
