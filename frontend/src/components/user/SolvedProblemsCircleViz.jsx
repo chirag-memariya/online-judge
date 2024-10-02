@@ -44,7 +44,7 @@ const SolvedProblemsCircleViz = ({ userId }) => {
         </svg>
         <div className="mt-4 flex justify-center space-x-4">
           <div className="flex items-center">
-            <span>No problems solved yet</span>
+            <span className='text-gray-300 dark:text-white'>No problems solved yet</span>
           </div>
         </div>
       </div>
