@@ -33,6 +33,7 @@ import AdminEditProfile from '../components/admin/AdminEditProfile';
 import AddAdminUser from '../components/admin/AddAdminUser';
 import AdminSettings from '../pages/admin/AdminSettings';
 import ManageUsers from '../pages/admin/ManageUsers';
+import CodeThroneHomepage from '../pages/CodeThroneHomepage';
 
 // ProtectedRoute component
 const ProtectedRoute = ({ element, redirectTo, isAllowed }) => {
@@ -54,7 +55,7 @@ const AppRoutes = () => {
         {/* User Authenticated Routes */}
         <Route path="/" element={<Dashboard />}>
         {/* <Route index element={isAdmin ? <Navigate to="/admin-dashboard" /> : <ProblemList />} /> */}
-          <Route index element={<ProblemList />} />
+          <Route index element={<CodeThroneHomepage />} />
           <Route path="leaderboard" element={<Leaderboard />} />
           <Route path="submissionlist" element={<SubmissionList />} />
         </Route>

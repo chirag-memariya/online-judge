@@ -16,8 +16,6 @@ export const AuthProvider = ({ children }) => {
     const [userId, setUserId] = useState(() => localStorage.getItem('userId'));
     const [userName, setUserName] = useState(() => localStorage.getItem('userName'));
     const [isAdmin, setIsAdmin] = useState(() => localStorage.getItem('isAdmin'));
-    
-    // Initialize from localStorage
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {

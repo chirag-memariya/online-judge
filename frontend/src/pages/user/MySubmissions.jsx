@@ -2,19 +2,19 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { AlertCircle, CheckCircle2, Clock } from "lucide-react";
+import { Home, Eye, X } from 'lucide-react'; // Icons from Lucide React
 
 const MySubmissions = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const problemId = location.state?.problemId;
-  const {userId} = useAuth();
-  const {isAdmin} =useAuth();
+  const { userId, isAdmin } = useAuth();
   const [submissions, setSubmissions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedSubmission, setSelectedSubmission] = useState(null);
   const [showModal, setShowModal] = useState(false);
-
 
   // Fetch submissions based on userId and problemId
   useEffect(() => {
@@ -33,14 +33,15 @@ const MySubmissions = () => {
   }, [userId, problemId]);
 
   const handleHomeClick = () => {
-    if(isAdmin){
-      navigate('/admin-dashboard')
-    }else{
+    if (isAdmin) {
+      navigate('/admin-dashboard');
+    } else {
       navigate('/');
     }
   };
-// Function to open the modal with the selected submission's details
-const openModal = (submission) => {
+
+  // Function to open the modal with the selected submission's details
+  const openModal = (submission) => {
     setSelectedSubmission(submission);
     setShowModal(true);
   };
@@ -51,29 +52,43 @@ const openModal = (submission) => {
     setSelectedSubmission(null);
   };
 
-
-  if (loading) {
-    return (
-      <div className="loading-container">
-        <div className="ring"></div>
-        <span>Loading...</span>
-      </div>
-    );
+    if (loading) {
+      return (
+          <div className="flex justify-center items-center h-64">
+              <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
+          </div>
+      );
   }
 
+  const getVerdictIcon = (verdict) => {
+    switch (verdict.toLowerCase()) {
+        case 'accepted':
+            return <CheckCircle2 className="text-green-500" />;
+        case 'wrong answer':
+            return <AlertCircle className="text-red-500" />;
+        default:
+            return <Clock className="text-yellow-500" />;
+    }
+};
+
   return (
-    <div className="relative overflow-x-auto shadow-md sm:rounded-lg bg-white dark:bg-gray-800 p-4">
+    <div className="relative overflow-x-auto shadow-md sm:rounded-lg bg-white dark:bg-gray-800 p-6">
+    
+    <div className="absolute top-0 right-0 w-96 h-96 bg-purple-300 dark:bg-purple-900 rounded-full filter blur-3xl opacity-20 animate-pulse"></div>
+    <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-300 dark:bg-blue-900 rounded-full filter blur-3xl opacity-20 animate-pulse" style={{ animationDelay: '1s' }}></div>
       {/* Home Button */}
       <button
         onClick={handleHomeClick}
-        className="fixed right-4 top-4 bg-teal-600 hover:bg-teal-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-200 ease-in-out z-50"
+        className="fixed right-4 top-4 flex items-center bg-teal-600 hover:bg-teal-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200 ease-in-out z-50"
       >
+        <Home className="w-5 h-5 mr-2" />
         Home
       </button>
 
       <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-6">
         Submissions
       </h2>
+
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
@@ -102,33 +117,23 @@ const openModal = (submission) => {
             submissions.map((submission, index) => (
               <tr
                 key={submission._id}
-                className={`transition duration-200 ease-in-out transform hover:translate-x-4 ${
-                  index % 2 === 0
-                    ? 'bg-white dark:bg-gray-800'
-                    : 'bg-gray-50 dark:bg-gray-700'
-                } border-b dark:border-gray-700`}
+                className={`transition-all duration-300 ease-in-out hover:scale-[1.02] hover:shadow-lg ${
+                                    index % 2 === 0 ? 'bg-white/50 dark:bg-gray-800/50' : 'bg-gray-50/50 dark:bg-gray-700/50'
+                                } border-b dark:border-gray-700`}
               >
-                <td className="px-6 py-4 whitespace-nowrap text-gray-900 dark:text-white">
-                  <span
-                    className={`px-4 py-1 rounded-full text-white ${
-                      submission.verdict === 'Accepted'
-                        ? 'bg-green-600'
-                        : submission.verdict === 'Rejected'
-                        ? 'bg-red-600'
-                        : 'bg-yellow-600'
-                    }`}
-                  >
-                    {submission.verdict}
-                  </span>
-                </td>
+                                <td className="px-6 py-4 whitespace-nowrap text-gray-900 dark:text-white flex items-center">
+                                    {getVerdictIcon(submission.verdict)}
+                                    <span className="ml-2">{submission.verdict}</span>
+                                </td>
                 <td className="px-6 py-4 whitespace-nowrap text-gray-900 dark:text-white">
                   {new Date(submission.submitted_at).toLocaleString()}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <button
-                    className="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600"
+                    className="bg-blue-500 flex items-center text-white py-2 px-3 rounded hover:bg-blue-600 transition duration-200 ease-in-out"
                     onClick={() => openModal(submission)}
                   >
+                    <Eye className="w-4 h-4 mr-2" />
                     View Solution
                   </button>
                 </td>
@@ -150,20 +155,20 @@ const openModal = (submission) => {
       {/* Modal for displaying submission details */}
       {showModal && selectedSubmission && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white w-11/12 md:w-1/2 lg:w-1/3 p-6 rounded-lg shadow-lg">
+          <div className="bg-white dark:bg-gray-800 w-11/12 md:w-1/2 lg:w-1/3 p-6 rounded-lg shadow-lg">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-semibold">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                 {selectedSubmission.verdict}
               </h3>
               <button
-                className="text-gray-600 hover:text-gray-800"
+                className="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100 transition duration-200 ease-in-out"
                 onClick={closeModal}
               >
-                &times;
+                <X className="w-6 h-6" />
               </button>
             </div>
-            <div className="overflow-y-auto h-64">
-              <pre className="bg-gray-100 p-4 rounded-md">
+            <div className="overflow-y-auto h-64 bg-gray-50 dark:bg-gray-700 p-4 rounded-md">
+              <pre className="whitespace-pre-wrap text-gray-800 dark:text-white">
                 <code className="text-sm">
                   {selectedSubmission.solution}
                 </code>
@@ -171,7 +176,7 @@ const openModal = (submission) => {
             </div>
             <div className="mt-4 text-right">
               <button
-                className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600"
+                className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600 transition duration-200 ease-in-out"
                 onClick={closeModal}
               >
                 Close
@@ -181,7 +186,6 @@ const openModal = (submission) => {
         </div>
       )}
     </div>
-
   );
 };
 
