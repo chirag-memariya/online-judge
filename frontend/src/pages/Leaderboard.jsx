@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Trophy, Medal, Award, Zap, User, Atom } from 'lucide-react';
+import { Trophy, Medal, Award, Zap, User, Loader2 } from 'lucide-react';
 
 const Leaderboard = () => {
     const [items, setItems] = useState([]);
@@ -54,14 +54,51 @@ const Leaderboard = () => {
 
     if (loading) {
         return (
-            <div className="flex justify-center items-center h-64">
-                <Atom className="h-12 w-12 text-blue-500 animate-spin" />
-                <div className="absolute">
-                    <div className="h-12 w-12 rounded-full border-t-2 border-b-2 border-blue-500 animate-ping"></div>
+          <div className="flex justify-center items-center h-64 relative">
+            <div className="relative">
+              <Loader2 className="h-16 w-16 text-blue-500 animate-spin" />
+              
+              {/* Gradient ring */}
+              <div className="absolute inset-0 -m-2">
+                <div className="h-20 w-20 rounded-full border-4 border-transparent 
+                                bg-gradient-to-r from-blue-500 to-purple-500 
+                                opacity-20 animate-spin [animation-duration:3s]" 
+                     style={{ clipPath: 'inset(0 0 50% 50%)' }}></div>
+              </div>
+              
+              {/* Orbiting dots */}
+              {[...Array(8)].map((_, i) => (
+                <div key={i} 
+                     className="absolute inset-0 animate-spin"
+                     style={{ 
+                       animationDuration: '3s',
+                       transform: `rotate(${i * 45}deg)`
+                     }}>
+                  <div className="h-2 w-2 rounded-full bg-blue-500 absolute -top-1"
+                       style={{
+                         animationDelay: `${i * 0.2}s`,
+                         opacity: 0.4 + (i * 0.1)
+                       }}></div>
                 </div>
+              ))}
             </div>
+            
+            {/* Optional progress bar */}
+            <div className="absolute bottom-0 w-64 h-1 bg-gray-200 rounded-full overflow-hidden">
+              <div className="h-full bg-gradient-to-r from-blue-500 to-purple-500 animate-[loading_2s_ease-in-out_infinite]"></div>
+            </div>
+          </div>
         );
-    }
+      }
+      
+      // Add this to your CSS
+      const cssAnimation = `
+      @keyframes loading {
+        0% { width: 0% }
+        50% { width: 100% }
+        100% { width: 0% }
+      }
+      `;
 
     return (
         <div className="relative min-h-screen bg-gradient-to-br from-white via-white/80 to-blue-50/50 dark:from-gray-900 dark:via-gray-800/80 dark:to-blue-900/30  overflow-hidden">

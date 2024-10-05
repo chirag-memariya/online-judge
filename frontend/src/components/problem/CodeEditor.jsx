@@ -391,30 +391,31 @@ const CodeEditor = ({ problemId }) => {
 
             {/* Run and Submit Buttons */}
             <div className="flex gap-4 mt-6">
-                <button
-                    onClick={handleRun}
-                    className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-blue-500 to-indigo-600 text-white focus:ring-4 focus:outline-none focus:ring-blue-300 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 active:translate-y-0 active:shadow-md"
-                >
-                    <span className="relative px-5 py-2.5 flex items-center transition-all ease-in duration-200 group-hover:bg-opacity-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 transition-transform duration-200 group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <polygon points="5 3 19 12 5 21 5 3" />
-                        </svg>
-                        Run
-                    </span>
-                </button>
+            <button
+    onClick={handleRun}
+    className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-green-500 to-green-600 text-white focus:ring-4 focus:outline-none focus:ring-green-300 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 active:translate-y-0 active:shadow-md"
+>
+    <span className="relative px-5 py-2.5 flex items-center transition-all ease-in duration-200 group-hover:bg-opacity-0">
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 transition-transform duration-200 group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polygon points="5 3 19 12 5 21 5 3" />
+        </svg>
+        Run
+    </span>
+</button>
 
-                <button
-                    onClick={handleSubmit}
-                    className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-blue-500 to-indigo-600 text-white focus:ring-4 focus:outline-none focus:ring-blue-300 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 active:translate-y-0 active:shadow-md"
-                >
-                    <span className="relative px-5 py-2.5 flex items-center transition-all ease-in duration-200 group-hover:bg-opacity-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 transition-transform duration-200 group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <line x1="22" y1="2" x2="11" y2="13" />
-                            <polygon points="22 2 15 22 11 13 2 9 22 2" />
-                        </svg>
-                        Submit
-                    </span>
-                </button>
+<button
+    onClick={handleSubmit}
+    className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-red-500 to-red-600 text-white focus:ring-4 focus:outline-none focus:ring-red-300 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 active:translate-y-0 active:shadow-md"
+>
+    <span className="relative px-5 py-2.5 flex items-center transition-all ease-in duration-200 group-hover:bg-opacity-0">
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 transition-transform duration-200 group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13" />
+            <polygon points="22 2 15 22 11 13 2 9 22 2" />
+        </svg>
+        Submit
+    </span>
+</button>
+
             </div>
         </div>
     )

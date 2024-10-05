@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { Home, User, Trophy } from 'lucide-react';
+import { Home, User, Trophy, Loader2, Edit3, Trash } from 'lucide-react';
 import SolvedProblemsCircleViz from './SolvedProblemsCircleViz';
 
 const UserProfile = () => {
@@ -71,11 +71,51 @@ const UserProfile = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
+      <div className="flex justify-center items-center h-64 relative">
+        <div className="relative">
+          <Loader2 className="h-16 w-16 text-blue-500 animate-spin" />
+          
+          {/* Gradient ring */}
+          <div className="absolute inset-0 -m-2">
+            <div className="h-20 w-20 rounded-full border-4 border-transparent 
+                            bg-gradient-to-r from-blue-500 to-purple-500 
+                            opacity-20 animate-spin [animation-duration:3s]" 
+                 style={{ clipPath: 'inset(0 0 50% 50%)' }}></div>
+          </div>
+          
+          {/* Orbiting dots */}
+          {[...Array(8)].map((_, i) => (
+            <div key={i} 
+                 className="absolute inset-0 animate-spin"
+                 style={{ 
+                   animationDuration: '3s',
+                   transform: `rotate(${i * 45}deg)`
+                 }}>
+              <div className="h-2 w-2 rounded-full bg-blue-500 absolute -top-1"
+                   style={{
+                     animationDelay: `${i * 0.2}s`,
+                     opacity: 0.4 + (i * 0.1)
+                   }}></div>
+            </div>
+          ))}
+        </div>
+        
+        {/* Optional progress bar */}
+        <div className="absolute bottom-0 w-64 h-1 bg-gray-200 rounded-full overflow-hidden">
+          <div className="h-full bg-gradient-to-r from-blue-500 to-purple-500 animate-[loading_2s_ease-in-out_infinite]"></div>
+        </div>
       </div>
     );
   }
+  
+  // Add this to your CSS
+  const cssAnimation = `
+  @keyframes loading {
+    0% { width: 0% }
+    50% { width: 100% }
+    100% { width: 0% }
+  }
+  `;
 
   if (error) return <p>{error}</p>;
 
@@ -216,6 +256,30 @@ const UserProfile = () => {
         <SolvedProblemsCircleViz userId={userId} />
       </div>
     </div>
+  
+              {/* Delete and Edit Buttons */}
+              <div className="mt-6 flex justify-between">
+              <button
+                onClick={handleEditUser}
+                className="justify-center items-center p-0.5 mb-2 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white focus:ring-4 focus:outline-none focus:ring-green-800 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 active:translate-y-0 active:shadow-md"
+              >
+                <span className="relative px-5 py-2.5 flex items-center transition-all ease-in duration-200 bg-gray-900/50 rounded-md group-hover:bg-transparent">
+                  <Edit3 className="h-4 w-4 mr-2 transition-transform duration-200 group-hover:scale-110" />
+                  Edit Profile
+                </span>
+              </button>
+
+              <button
+                onClick={handleDeleteUser}
+                className="inline-flex items-center p-0.5 mb-2 justify-center overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white focus:ring-4 focus:outline-none focus:ring-red-800 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 active:translate-y-0 active:shadow-md"
+              >
+                <span className="relative px-5 py-2.5 flex items-center transition-all ease-in duration-200 bg-gray-900/50 rounded-md group-hover:bg-transparent">
+                  <Trash className="h-4 w-4 mr-2 transition-transform duration-200 group-hover:scale-110" />
+                  Delete Profile
+                </span>
+              </button>
+            </div>
+
   </div>
 ) : (
   <p className="text-gray-900 dark:text-white">User not found</p>
