@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios';
+import { Zap, Play, Send, Maximize2, Minimize2, Clock, CheckCircle, XCircle } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 const CodeEditor = ({ problemId }) => {
@@ -9,10 +10,13 @@ const CodeEditor = ({ problemId }) => {
     const [verdict, setVerdict] = useState('');
     const [code, setCode] = useState(``);
     const [testCases, setTestCases] = useState([]);
-    const [activeTab, setActiveTab] = useState('input'); // 'input', 'output', or 'verdict'
-    const [isFullScreen, setIsFullScreen] = useState(false); // Track full-screen mode
+    const [activeTab, setActiveTab] = useState('input');
+    const [isFullScreen, setIsFullScreen] = useState(false);
+    const [isRunning, setIsRunning] = useState(false);
+    const [executionTime, setExecutionTime] = useState(null);
     const codeEditorRef = useRef(null);
     const { userId } = useAuth();
+
 
 
     const codeTemplates = {
@@ -94,11 +98,15 @@ const CodeEditor = ({ problemId }) => {
     }, [problemId]);
 
     const handleRun = async () => {
+        setIsRunning(true);
+        const startTime = performance.now();
         const payload = { language, code, input };
         try {
             const { data } = await axios.post(`${import.meta.env.VITE_COMPILER_URL}/run`, payload, {
                 headers: { 'Content-Type': 'application/json' }
             });
+            const endTime = performance.now();
+            setExecutionTime(((endTime - startTime) / 1000).toFixed(3));
             setOutput(data.output);
             setVerdict('Run Complete');
             setActiveTab('output');
@@ -107,14 +115,17 @@ const CodeEditor = ({ problemId }) => {
             setOutput('');
             setVerdict('Error running code');
             setActiveTab('verdict');
+        } finally {
+            setIsRunning(false);
         }
     };
 
     const handleSubmit = async () => {
         if (!problemId) return;
-
+        setIsRunning(true);
         let allPassed = true;
         const submissionResults = [];
+        const startTime = performance.now();
 
         for (let i = 0; i < testCases.length; i++) {
             const testCase = testCases[i];
@@ -126,23 +137,45 @@ const CodeEditor = ({ problemId }) => {
                 });
 
                 const isCorrect = data.output.trim() === testCase.output.trim();
-                submissionResults.push({ testCaseId: testCase._id, output: data.output, isCorrect });
+                submissionResults.push({
+                    testCaseId: testCase._id,
+                    output: data.output,
+                    expected: testCase.output,
+                    isCorrect
+                });
                 if (!isCorrect) allPassed = false;
             } catch (error) {
-                submissionResults.push({ testCaseId: testCase._id, output: error.message, isCorrect: false });
+                submissionResults.push({
+                    testCaseId: testCase._id,
+                    output: error.message,
+                    expected: testCase.output,
+                    isCorrect: false
+                });
                 allPassed = false;
             }
         }
 
+        const endTime = performance.now();
+        const executionTime = ((endTime - startTime) / 1000).toFixed(3);
+        setExecutionTime(executionTime);
+
         const verdict = allPassed ? 'Accepted' : 'Wrong Answer';
         setVerdict(verdict);
+
+        // Format verdict details
+        const verdictDetails = submissionResults.map((result, index) =>
+            `Test Case ${index + 1}: ${result.isCorrect ? '✅' : '❌'}
+            ${!result.isCorrect ? `\nExpected: ${result.expected}\nGot: ${result.output}` : ''}`
+        ).join('\n\n');
+
+        setVerdict(`${verdict}\n\nExecution Time: ${executionTime}s\n\n${verdictDetails}`);
 
         const submissionPayload = {
             problem: problemId,
             user: userId,
             verdict,
             solution: code,
-            execution_time: 0
+            execution_time: parseFloat(executionTime)
         };
 
         try {
@@ -154,6 +187,7 @@ const CodeEditor = ({ problemId }) => {
         }
 
         setActiveTab('verdict');
+        setIsRunning(false);
     };
 
     const toggleFullScreen = () => {
@@ -188,14 +222,21 @@ const CodeEditor = ({ problemId }) => {
     }
 
     return (
-        <div className={`flex-1 p-6 bg-white dark:bg-gray-800 shadow-md rounded-lg ${isFullScreen ? 'fixed top-0 left-0 w-full h-full z-50' : ''}`}>
+        <div className={`p-6 flex-1 bg-gradient-to-br from-white via-white/80 to-blue-50/50 dark:from-gray-900 dark:via-gray-800/80 dark:to-blue-900/30 shadow-lg overflow-hidden ${isFullScreen ? 'fixed top-0 left-0 w-full h-full z-50' : ''}`}>
             {/* Language and Code Editor Section */}
             <div className={`mb-6 ${isFullScreen ? 'h-full' : ''}`} ref={codeEditorRef}>
-                <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center justify-between mb-6">
+                    <div className='flex items-center space-x-2'>
+                    <div className="relative">
+                        <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg blur opacity-25" />
+                        <div className="relative bg-white dark:bg-gray-800 p-1 rounded-lg">
+                            <Zap className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                        </div>
+                    </div>
                     <select
                         value={language}
                         onChange={(e) => setLanguage(e.target.value)}
-                        className="p-2 w-1/2 border border-gray-300 dark:border-gray-600 rounded-lg mr-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                        className="p-2 w-3/2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-all duration-200"
                     >
                         <option value="cpp">C++ (C++17/C++20)</option>
                         <option value="java">Java (OpenJDK 21)</option>
@@ -204,26 +245,27 @@ const CodeEditor = ({ problemId }) => {
                         <option value="js">JavaScript (Node.js 18.20.4)</option>
 
                     </select>
+                    </div>
                     <button
-    onClick={toggleFullScreen}
-    className="p-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600 transition-all duration-200 flex items-center space-x-2"
->
-    {isFullScreen ? (
-        <>
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M4 14h6m0 0v6m0-6L3 21M20 10h-6m0 0V4m0 6l7-7"/>
-            </svg>
-            <span className="text-sm">Exit</span>
-        </>
-    ) : (
-        <>
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
-            </svg>
-            <span className="text-sm">Fullscreen</span>
-        </>
-    )}
-</button>
+                        onClick={toggleFullScreen}
+                        className="flex items-center space-x-2 px-4 py-2 bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-500 transition-all duration-200"
+                    >
+                        {isFullScreen ? (
+                            <>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M4 14h6m0 0v6m0-6L3 21M20 10h-6m0 0V4m0 6l7-7" />
+                                </svg>
+                                <span className="text-sm">Exit</span>
+                            </>
+                        ) : (
+                            <>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
+                                </svg>
+                                <span className="text-sm">Fullscreen</span>
+                            </>
+                        )}
+                    </button>
                 </div>
 
                 {/* color: '#cce7ff', // Change this color as needed */}
@@ -252,27 +294,19 @@ const CodeEditor = ({ problemId }) => {
             </div>
 
             {/* Navbar for Input, Output, Verdict */}
-            <div className="mb-6">
-                <nav className="flex space-x-4 border-b border-gray-200 dark:border-gray-600">
+            <div className="flex space-x-1 mb-4 bg-gray-100 dark:bg-gray-700 p-1 rounded-lg">
+                {['input', 'output', 'verdict'].map((tab) => (
                     <button
-                        onClick={() => setActiveTab('input')}
-                        className={`p-2 ${activeTab === 'input' ? 'font-bold text-blue-500' : 'text-gray-600'}`}
+                        key={tab}
+                        onClick={() => setActiveTab(tab)}
+                        className={`flex-1 px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 ${activeTab === tab
+                                ? 'bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-400 shadow-sm'
+                                : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                            }`}
                     >
-                        Input
+                        {tab.charAt(0).toUpperCase() + tab.slice(1)}
                     </button>
-                    <button
-                        onClick={() => setActiveTab('output')}
-                        className={`p-2 ${activeTab === 'output' ? 'font-bold text-blue-500' : 'text-gray-600'}`}
-                    >
-                        Output
-                    </button>
-                    <button
-                        onClick={() => setActiveTab('verdict')}
-                        className={`p-2 ${activeTab === 'verdict' ? 'font-bold text-blue-500' : 'text-gray-600'}`}
-                    >
-                        Verdict
-                    </button>
-                </nav>
+                ))}
             </div>
 
             {/* Dynamic Content Based on Active Tab */}
@@ -357,30 +391,30 @@ const CodeEditor = ({ problemId }) => {
 
             {/* Run and Submit Buttons */}
             <div className="flex gap-4 mt-6">
-            <button
-    onClick={handleRun}
-    className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-blue-500 to-indigo-600 text-white focus:ring-4 focus:outline-none focus:ring-blue-300 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 active:translate-y-0 active:shadow-md"
->
-    <span className="relative px-5 py-2.5 flex items-center transition-all ease-in duration-200 group-hover:bg-opacity-0">
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 transition-transform duration-200 group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polygon points="5 3 19 12 5 21 5 3" />
-        </svg>
-        Run
-    </span>
-</button>
+                <button
+                    onClick={handleRun}
+                    className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-blue-500 to-indigo-600 text-white focus:ring-4 focus:outline-none focus:ring-blue-300 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 active:translate-y-0 active:shadow-md"
+                >
+                    <span className="relative px-5 py-2.5 flex items-center transition-all ease-in duration-200 group-hover:bg-opacity-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 transition-transform duration-200 group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <polygon points="5 3 19 12 5 21 5 3" />
+                        </svg>
+                        Run
+                    </span>
+                </button>
 
-<button
-    onClick={handleSubmit}
-    className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-blue-500 to-indigo-600 text-white focus:ring-4 focus:outline-none focus:ring-blue-300 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 active:translate-y-0 active:shadow-md"
->
-    <span className="relative px-5 py-2.5 flex items-center transition-all ease-in duration-200 group-hover:bg-opacity-0">
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 transition-transform duration-200 group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="22" y1="2" x2="11" y2="13" />
-            <polygon points="22 2 15 22 11 13 2 9 22 2" />
-        </svg>
-        Submit
-    </span>
-</button>
+                <button
+                    onClick={handleSubmit}
+                    className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-blue-500 to-indigo-600 text-white focus:ring-4 focus:outline-none focus:ring-blue-300 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 active:translate-y-0 active:shadow-md"
+                >
+                    <span className="relative px-5 py-2.5 flex items-center transition-all ease-in duration-200 group-hover:bg-opacity-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 transition-transform duration-200 group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <line x1="22" y1="2" x2="11" y2="13" />
+                            <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                        </svg>
+                        Submit
+                    </span>
+                </button>
             </div>
         </div>
     )

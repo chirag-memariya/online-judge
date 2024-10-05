@@ -14,7 +14,7 @@ const Dashboard = () => {
             </div>
 
             {/* Main content area */}
-            <div className="relative z-10 p-4">
+            <div className="relative z-10">
                 <Outlet />
             </div>
         </div>

@@ -1,0 +1,16 @@
+.neon-bg {
+    background-color: #111;
+    box-shadow: 0 0 20px #00c6ff, 0 0 30px #0072ff;
+    border-radius: 12px;
+  }
+  
+  .neon-bg .border {
+    border: 2px solid #00c6ff;
+  }
+  
+  .neon-bg p,
+  .neon-bg h3,
+  .neon-bg h4 {
+    color: #00c6ff;
+  }
+  

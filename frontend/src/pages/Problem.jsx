@@ -13,7 +13,7 @@ const Problem = () => {
   return (
     <>
       {isAdmin ? <AdminNavbar /> : <Navbar />}
-      <div className="flex flex-row justify-between p-4 space-x-4">
+      <div className="flex flex-row justify-between">
         <ProblemDiscription item={item} />
         {item && item._id && (
           <CodeEditor problemId={item._id} />

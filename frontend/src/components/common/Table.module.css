@@ -1,0 +1,77 @@
+/* Table.module.css */
+
+.tableContainer {
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    border-radius: 0.75rem;
+    background-color: rgba(50, 47, 47, 0.8);
+    backdrop-filter: blur(8px);
+    padding: 1.5rem;
+    position: relative;
+}
+
+.darkBg {
+    background-color: rgba(31, 41, 55, 0.8); /* dark:bg-gray-800/80 */
+}
+
+.loadingSpinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 16rem;
+}
+
+.gradientOverlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom right, transparent, rgba(96, 165, 250, 0.1));
+}
+
+.darkGradientOverlay {
+    background: linear-gradient(to bottom right, transparent, rgba(96, 165, 250, 0.2));
+}
+
+.table {
+    min-width: 100%;
+    text-align: left;
+    margin: 0.5rem;
+}
+
+.tableHeader {
+    font-size: 1rem;
+    font-weight: 600;
+    color: rgba(17, 24, 39, 1); /* text-gray-900 */
+}
+
+.darkTableHeader {
+    color: rgba(255, 255, 255, 1); /* dark:text-white */
+}
+
+.tableRow {
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.tableRowHover {
+    transform: scale(1.02);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.evenRow {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.oddRow {
+    background-color: rgba(249, 250, 251, 0.5);
+}
+
+.darkEvenRow {
+    background-color: rgba(31, 41, 55, 0.5);
+}
+
+.darkOddRow {
+    background-color: rgba(55, 65, 81, 0.5);
+}
+
+/* Add any other classes you need to make the table gray-themed */

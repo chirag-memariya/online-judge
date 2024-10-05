@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { AlertCircle, CheckCircle2, Clock } from "lucide-react";
+import { XCircleIcon, CheckCircle2, Clock } from "lucide-react";
 import { Home, Eye, X } from 'lucide-react'; // Icons from Lucide React
 
 const MySubmissions = () => {
@@ -65,7 +65,7 @@ const MySubmissions = () => {
         case 'accepted':
             return <CheckCircle2 className="text-green-500" />;
         case 'wrong answer':
-            return <AlertCircle className="text-red-500" />;
+            return <XCircleIcon className="text-red-500" />;
         default:
             return <Clock className="text-yellow-500" />;
     }
@@ -78,12 +78,14 @@ const MySubmissions = () => {
     <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-300 dark:bg-blue-900 rounded-full filter blur-3xl opacity-20 animate-pulse" style={{ animationDelay: '1s' }}></div>
       {/* Home Button */}
       <button
-        onClick={handleHomeClick}
-        className="fixed right-4 top-4 flex items-center bg-teal-600 hover:bg-teal-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200 ease-in-out z-50"
-      >
-        <Home className="w-5 h-5 mr-2" />
-        Home
-      </button>
+          onClick={handleHomeClick}
+          className="fixed right-4 top-4 flex items-center p-0.5 mb-2 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white focus:ring-4 focus:outline-none focus:ring-blue-800 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 active:translate-y-0 active:shadow-md"
+        >
+          <span className="relative px-5 py-2.5 flex items-center transition-all ease-in duration-200 bg-gray-900/50 rounded-md group-hover:bg-transparent">
+            <Home className="h-4 w-4 mr-2 transition-transform duration-200 group-hover:scale-110" />
+            Home
+          </span>
+        </button>
 
       <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-6">
         Submissions

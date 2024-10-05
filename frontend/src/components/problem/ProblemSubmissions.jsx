@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { AlertCircle, CheckCircle2, Clock, FileCode, User } from "lucide-react";
+import { XCircleIcon, CheckCircle2, Clock, FileCode, User } from "lucide-react";
 
 import { Home } from 'lucide-react'; // Importing icons
 
@@ -52,7 +52,7 @@ const ProblemSubmissions = () => {
         case 'accepted':
             return <CheckCircle2 className="text-green-500" />;
         case 'wrong answer':
-            return <AlertCircle className="text-red-500" />;
+            return <XCircleIcon className="text-red-500" />;
         default:
             return <Clock className="text-yellow-500" />;
     }
@@ -68,12 +68,14 @@ const ProblemSubmissions = () => {
 
       {/* Home Button */}
       <button
-        onClick={handleHomeClick}
-        className="fixed right-4 top-4 flex items-center bg-teal-600 hover:bg-teal-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200 ease-in-out z-50"
-      >
-        <Home className="w-5 h-5 mr-2" />
-        Home
-      </button>
+          onClick={handleHomeClick}
+          className="fixed right-4 top-4 flex items-center p-0.5 mb-2 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white focus:ring-4 focus:outline-none focus:ring-blue-800 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 active:translate-y-0 active:shadow-md"
+        >
+          <span className="relative px-5 py-2.5 flex items-center transition-all ease-in duration-200 bg-gray-900/50 rounded-md group-hover:bg-transparent">
+            <Home className="h-4 w-4 mr-2 transition-transform duration-200 group-hover:scale-110" />
+            Home
+          </span>
+        </button>
 
       <h2 className="text-center text-3xl font-semibold text-gray-900 dark:text-white mb-4">
         All Submissions

@@ -24,7 +24,7 @@ router.post("/register", async (req, res) => {
 
         // Encrypt password
         const hashPassword = bcrypt.hashSync(password, 8);
-        console.log("hashPassword: " + hashPassword);
+        // console.log("hashPassword: " + hashPassword);
 
         // Save to the database
         const user = await User.create({
