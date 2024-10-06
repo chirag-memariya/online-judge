@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { Home, Eye, X, CheckCircleIcon, XCircleIcon, CircleAlert, CircleHelp } from 'lucide-react'; // Icons from Lucide React
+import { Home, Eye, X, CheckCircleIcon, XCircleIcon, CircleAlert, CircleHelp, Loader2 } from 'lucide-react'; // Icons from Lucide React
 
 
 const UserSubmissions = () => {
@@ -108,11 +108,7 @@ const UserSubmissions = () => {
   `;
 
   if (error) {
-    return <div>Error: {error}</div>;
-  }
-
-  if (submissions.length === 0) {
-    return <div>No submissions found for this user.</div>;
+    console.log(error);
   }
 
   const handleHomeClick = () => {
@@ -133,8 +129,10 @@ const UserSubmissions = () => {
   {/* Home Button */}
   <button
           onClick={handleHomeClick}
-          className="fixed right-4 top-4 flex items-center p-0.5 mb-2 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white focus:ring-4 focus:outline-none focus:ring-blue-800 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 active:translate-y-0 active:shadow-md"
+          className="fixed right-20 top-4 flex items-center p-0.5 mb-2 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white focus:ring-4 focus:outline-none focus:ring-blue-800 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 active:translate-y-0 active:shadow-md"
+          style={{ right: '132px' }}         
         >
+
           <span className="relative px-5 py-2.5 flex items-center transition-all ease-in duration-200 bg-gray-900/50 rounded-md group-hover:bg-transparent">
             <Home className="h-4 w-4 mr-2 transition-transform duration-200 group-hover:scale-110" />
             Home
@@ -160,7 +158,8 @@ const UserSubmissions = () => {
       </tr>
     </thead>
     <tbody>
-      {submissions.map((submission, index) => (
+      {submissions.length > 0 ? (
+        submissions.map((submission, index) => (
         <tr
           key={submission._id}
           className={`transition-all duration-300 ease-in-out hover:scale-[1.02] hover:shadow-lg ${
@@ -184,7 +183,18 @@ const UserSubmissions = () => {
             </button>
           </td>
         </tr>
-      ))}
+      ))
+      ) : (
+        <tr>
+              <td
+                className="px-6 py-4 whitespace-nowrap text-gray-500 dark:text-gray-400 text-center"
+                colSpan="3"
+              >
+                No submissions available.
+              </td>
+            </tr>
+      )
+      }
     </tbody>
   </table>
 

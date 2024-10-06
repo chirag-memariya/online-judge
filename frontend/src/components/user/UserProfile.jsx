@@ -117,7 +117,7 @@ const UserProfile = () => {
   }
   `;
 
-  if (error) return <p>{error}</p>;
+  if (error) console.log(error);
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-white via-white/80 to-blue-50/50 dark:from-gray-900 dark:via-gray-800/80 dark:to-blue-900/30">

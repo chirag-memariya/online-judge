@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { XCircleIcon, CheckCircle2, Clock, Loader2, User } from "lucide-react";
-
 import { Home } from 'lucide-react'; // Importing icons
 
 const ProblemSubmissions = () => {

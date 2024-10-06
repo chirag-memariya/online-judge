@@ -72,7 +72,7 @@ const SubmissionList = () => {
       `;
 
     if (error) {
-        return <div>Error: {error}</div>;
+        console.log(error);
     }
 
     if (submissions.length === 0) {
