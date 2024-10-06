@@ -21,7 +21,9 @@ const MySubmissions = () => {
     const fetchSubmissions = async () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/submissions/user/${userId}/problem/${problemId}`);
-        setSubmissions(response.data);
+        // Filter out submissions where problem or user is null
+        const filteredSubmissions = response.data.filter(submission => submission.problem !== null && submission.user !== null);
+        setSubmissions(filteredSubmissions);
       } catch (err) {
         setError(null);
       } finally {
