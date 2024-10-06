@@ -1,100 +1,142 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { Mail, Lock, LogIn, UserPlus, Shield, Loader2, AlertTriangle } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+
+// Alert Components remain the same
+const Alert = ({ children, variant = "default", className, ...props }) => {
+  const baseStyles = "relative w-full rounded-lg border p-4 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground";
+  const variantStyles = {
+    default: "bg-background text-foreground",
+    destructive: "border-red-500/50 text-red-500 dark:border-red-500 [&>svg]:text-red-500 bg-red-500/10",
+  };
+
+  return (
+    <div
+      role="alert"
+      className={`${baseStyles} ${variantStyles[variant]} ${className}`}
+      {...props}
+    >
+      {variant === "destructive" && <AlertTriangle className="h-4 w-4" />}
+      {children}
+    </div>
+  );
+};
+
+const AlertDescription = ({
+  className,
+  ...props
+}) => (
+  <div
+    className={`text-sm [&_p]:leading-relaxed ${className}`}
+    {...props}
+  />
+);
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { login } = useAuth(); // Assuming you have a function for admin login in AuthContext
-
+  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    setError('');
     try {
       await login(email, password);
       console.log('Admin Login successful');
       navigate('/admin-dashboard');
     } catch (error) {
       setError('Admin Login failed: ' + error.message);
+    }finally{
+      setIsLoading(false);
     }
   };
 
   return (
 
-<section className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center px-6 py-8">
-  <div className="flex flex-col items-center justify-center w-full max-w-md bg-white rounded-lg shadow dark:bg-gray-800 p-6">
-    <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-6">
-      Admin Login
-    </h2>
-          {/* Form Container */}
-          <div className="w-full bg-white rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700 border border-gray-200">
-        <div className="p-8 space-y-6">
-    {error && <p className="text-sm text-red-500 mb-4">{error}</p>}
-    <form className="w-full space-y-4" onSubmit={handleSubmit}>
-      <div>
-        <label
-          htmlFor="email"
-          className="block text-sm font-medium text-gray-900 dark:text-white mb-2"
-        >
-          Admin Email
-        </label>
-        <input
-          type="email"
-          name="email"
-          id="email"
-          className="w-full p-2 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-          placeholder="admin@company.com"
-          required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          autoComplete="username"
-        />
+    <div className="login-container">
+      <div className="floating-shapes">
+        <div className="shape shape-1"></div>
+        <div className="shape shape-2"></div>
+        <div className="shape shape-3"></div>
       </div>
-
-      <div>
-        <label
-          htmlFor="password"
-          className="block text-sm font-medium text-gray-900 dark:text-white mb-2"
-        >
-          Password
-        </label>
-        <input
-          type="password"
-          name="password"
-          id="password"
-          placeholder="••••••••"
-          className="w-full p-2 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-          required
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          autoComplete="current-password"
-        />
+      
+      <div className="login-content">
+        <div className="login-card">
+          <div className="logo-container">
+            <div className="logo-circle">
+              <LogIn className="w-8 h-8 text-white" />
+            </div>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Welcome Back Admin!</h1>
+            <p className="text-gray-500 dark:text-gray-400 mt-2">Please enter your details</p>
+          </div>
+          
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {error && (
+              <Alert variant="destructive">
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
+            
+            <div className="form-group">
+              <label htmlFor="email">Email</label>
+              <div className="input-container">
+                <Mail className="input-icon" />
+                <input
+                  type="email"
+                  id="email"
+                  placeholder="name@company.com"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  autoComplete="username"
+                />
+              </div>
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="password">Password</label>
+              <div className="input-container">
+                <Lock className="input-icon" />
+                <input
+                  type="password"
+                  id="password"
+                  placeholder="••••••••"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  autoComplete="current-password"
+                />
+              </div>
+            </div>
+            
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="submit-button"
+            >
+              {isLoading ? (
+                <Loader2 className="w-5 h-5 animate-spin" />
+              ) : (
+                <Shield className="w-5 h-5" />
+              )}
+              <span>{isLoading ? 'Signing In...' : 'Sign In As Admin'}</span>
+            </button>
+            
+            <div className="additional-links">           
+              <Link to="/login" className="secondary-button">
+                <LogIn className="w-5 h-5" />
+                <span>User Login</span>
+              </Link>
+            </div>
+          </form>
+        </div>
       </div>
-
-      <button
-        type="submit"
-        className="w-full py-3 text-white bg-blue-600 rounded-lg font-semibold hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-      >
-        LOGIN AS ADMIN
-      </button>
-
-      <p className="text-center text-sm font-light text-gray-500 dark:text-gray-400 mt-4">
-        Not an admin?{' '}
-        <Link
-          to="/login"
-          className="font-medium text-blue-600 hover:underline dark:text-blue-400"
-        >
-          User Login
-        </Link>
-      </p>
-    </form>
-    
-  </div>
-  </div>
-  </div>
-</section>
+    </div>
 
 
 
