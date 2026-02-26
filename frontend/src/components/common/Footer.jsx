@@ -48,7 +48,7 @@ const Footer = () => {
                 
                 <div className="text-center">
                     <span className="text-sm text-gray-500 dark:text-gray-400">
-                        © 2024{' '}
+                        © 2026{' '}
                         <Link to="/" className="hover:text-blue-600 dark:hover:text-blue-400">
                             CodeThrone™
                         </Link>
